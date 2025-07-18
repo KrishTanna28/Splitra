@@ -11,10 +11,10 @@ const {
   getComments
 } = require('../controllers/expenseController');
 
-router.post('/add', auth, upload.single('receipt'), addExpense);
+router.post('/:groupId/add', auth, upload.single('receipt'), addExpense);
 router.get('/:groupId', auth, getGroupExpenses);
 router.delete('/:expenseId', auth, deleteExpense);
-router.put('/:expenseId', auth, updateExpense);
+router.put('/:groupId/:expenseId', auth, upload.single('receipt'), updateExpense);
 router.post('/:expenseId/comment', auth, addComment);
 router.get('/:expenseId/comments', auth, getComments);
 

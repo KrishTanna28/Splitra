@@ -1,14 +1,22 @@
 const pool = require('../config/db');
 const QRCode = require('qrcode');
+const sendEmail = require("../utils/mailer");
 
 exports.generateUPIQRCode = async (req, res) => {
-  const { upiId, name, amount } = req.query;
+  const userId = req.user.id;
+  const receiver_id = req.params.id;
+  const userResult = await pool.query('SELECT upi_id FROM users WHERE id=$1', [receiver_id]);
+  const upiId = userResult.rows[0].upi_id;
+  const amount = await pool.query(
+    `SELECT amount FROM settlements WHERE paid_by = $1 AND paid_to = $2`,
+    [receiver_id, userId]
+  );
 
-  if (!upiId || !name || !amount) {
+  if (!upiId || !amount) {
     return res.status(400).json({ message: 'upiId, name, and amount are required' });
   }
 
-  const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+  const upiUrl = `upi://pay?pa=${upiId}&am=${amount}&cu=INR`;
 
   try {
     const qr = await QRCode.toDataURL(upiUrl);
@@ -21,7 +29,9 @@ exports.generateUPIQRCode = async (req, res) => {
 
 // Record a manual settlement
 exports.addSettlement = async (req, res, next) => {
-  const { groupId, paidBy, paidTo, amount, note } = req.body;
+  const userId = req.user.id;
+  const groupId = req.params.groupId;
+  const { paidBy, paidTo, amount, note } = req.body;
 
   try {
     await pool.query(
@@ -57,34 +67,39 @@ exports.getSettlements = async (req, res, next) => {
   }
 };
 
-exports.generateUPILink = (req, res) => {
-  const { upiId, name, amount } = req.query;
-
-  if (!upiId || !name || !amount) {
-    return res.status(400).json({ message: 'upiId, name, and amount are required' });
-  }
-
-  const link = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
-
-  res.json({ link });
-};
-
 exports.addRecurringContribution = async (req, res, next) => {
-  const { groupId, userId, amount, startDate, frequency } = req.body;
+  const userId = req.user.id;
+  const groupId = req.params.groupId;
+  const { amount, startDate, frequency, description , category} = req.body;
 
   if (!groupId || !userId || !amount || !startDate) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
 
   try {
+    // Get all users in the group
+    const membersRes = await pool.query(
+      `SELECT u.id, u.name, u.email FROM group_members gm
+       JOIN users u ON gm.user_id = u.id
+       WHERE gm.group_id = $1`,
+      [groupId]
+    );
+    const members = membersRes.rows;
+
+    if (members.length === 0) {
+      return res.status(400).json({ message: 'No members in the group' });
+    }
+
+    // Insert recurring contribution
     await pool.query(
-      `INSERT INTO recurring_contributions (group_id, user_id, amount, start_date, frequency)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [groupId, userId, amount, startDate, frequency || 'monthly']
+      `INSERT INTO recurring_contributions (group_id, user_id, amount, start_date, frequency, description, category)
+       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [groupId, userId, amount, startDate, frequency || 'monthly', description, category]
     );
 
-    res.status(201).json({ message: 'Recurring contribution added' });
+    res.status(201).json({ message: 'Recurring contribution added and notifications sent' });
   } catch (err) {
     next(err);
   }
 };
+

@@ -13,7 +13,7 @@ cron.schedule('0 8 * * *', async () => {
       JOIN expense_shares es ON e.id = es.expense_id
       JOIN groups g ON g.id = e.group_id
       JOIN users u ON es.user_id = u.id
-      WHERE es.user_id != e.paid_by
+      WHERE es.user_id != e.paid_by_id
       GROUP BY g.id, u.id, u.name, u.email
       HAVING SUM(es.amount) > 0
     `);

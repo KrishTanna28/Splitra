@@ -7,10 +7,10 @@ exports.getGroupBalances = async (req, res, next) => {
     try {
         // Get total paid per user in group
         const paidResult = await pool.query(
-            `SELECT paid_by as user_id, SUM(amount) as total_paid
+            `SELECT paid_by_id as user_id, SUM(amount) as total_paid
        FROM expenses
        WHERE group_id = $1
-       GROUP BY paid_by`,
+       GROUP BY paid_by_id`,
             [groupId]
         );
 
@@ -35,8 +35,6 @@ exports.getGroupBalances = async (req, res, next) => {
             balances[row.user_id] = (balances[row.user_id] || 0) - parseFloat(row.total_owed);
         }
 
-        // Optimize transactions
-        const optimized = minimizeTransactions(balances);
 
         // Get total settlements paid and received
         const settlementsResult = await pool.query(
@@ -54,6 +52,9 @@ exports.getGroupBalances = async (req, res, next) => {
             balances[to] = (balances[to] || 0) + amt;
         }
 
+        // Optimize transactions
+        const optimized = minimizeTransactions(balances);
+        
         res.json({ balances, settlements: optimized });
     } catch (err) {
         next(err);

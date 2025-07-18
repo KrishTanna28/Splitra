@@ -12,8 +12,8 @@ const {
 // All routes require auth
 router.post('/create', auth, createGroup);  
 router.get('/my-groups', auth, getUserGroups);
-router.post('/add-member', auth, addMember);
-router.delete('/remove-member', auth, removeMember);
+router.post('/:groupId/add-member', auth, addMember);
+router.delete('/:groupId/remove-member/:id', auth, removeMember);
 router.get('/:groupId/members', auth, getGroupMembers);
 
 module.exports = router;

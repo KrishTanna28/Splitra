@@ -5,13 +5,13 @@ exports.createGroup = async (req, res, next) => {
   const userId = req.user.id;
 
   try {
+    const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+    const username = userResult.rows[0].name;
     const groupResult = await pool.query(
-      'INSERT INTO groups (name, description, created_by) VALUES ($1, $2, $3) RETURNING *',
-      [name, description, userId]
+      'INSERT INTO groups (name, description, created_by_id, created_by) VALUES ($1, $2, $3, $4) RETURNING *',
+      [name, description, userId, username]
     );
-
     const groupId = groupResult.rows[0].id;
-
     // Make creator an Admin in group_members
     await pool.query(
       'INSERT INTO group_members (group_id, user_id, role) VALUES ($1, $2, $3)',
@@ -43,7 +43,8 @@ exports.getUserGroups = async (req, res, next) => {
 };
 
 exports.addMember = async (req, res, next) => {
-  const { groupId, userId, role } = req.body;
+  const groupId = req.params.groupId;
+  const { userEmail, role } = req.body;
   const requesterId = req.user.id;
 
   try {
@@ -56,20 +57,25 @@ exports.addMember = async (req, res, next) => {
       return res.status(403).json({ message: 'Only Admins can add members' });
     }
 
+    const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [userEmail]);
+    if(!userResult.rows[0]){
+      res.status(404).json({message:"User not found"});
+    }
+    const userId = userResult.rows[0].id;
     // Add member
     await pool.query(
-      'INSERT INTO group_members (group_id, user_id, role) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING',
-      [groupId, userId, role]
+      'INSERT INTO group_members (group_id, user_email, role, user_id) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING',
+      [groupId, userEmail, role, userId]
     );
-
-    res.json({ message: 'Member added' });
+    res.json({ message: 'Member added'});
   } catch (err) {
     next(err);
   }
 };
 
 exports.removeMember = async (req, res, next) => {
-  const { groupId, userId } = req.body;
+  const groupId = req.params.groupId;
+  const userId = req.params.id;
   const requesterId = req.user.id;
 
   try {

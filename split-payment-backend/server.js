@@ -17,12 +17,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
-app.use('/api/auth', authRoutes);
-app.use('/api/groups', groupRoutes);
-app.use('/api/expenses', expenseRoutes);
-app.use('/api/balances', balanceRoutes);
-app.use('/api/settlements', settlementRoutes);
-app.use('/api/reports', reportRoutes);
+app.use('/auth', authRoutes);
+app.use('/groups', groupRoutes);
+app.use('/expenses', expenseRoutes);
+app.use('/balances', balanceRoutes);
+app.use('/settlements', settlementRoutes);
+app.use('/reports', reportRoutes);
 
 app.use(errorHandler);
 
