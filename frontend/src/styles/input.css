@@ -1,0 +1,102 @@
+.input-group {
+    margin-bottom: 16px;
+  }
+  
+  .input-label {
+    display: block;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+  
+  .input:disabled {
+    background-color: var(--bg-tertiary);
+    color: var(--text-muted);
+    cursor: not-allowed;
+  }
+  
+  .input-error {
+    border-color: var(--error);
+  }
+  
+  .input-error:focus {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px var(--error-bg);
+  }
+  
+  .error-message {
+    display: block;
+    color: var(--error-text);
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+  
+  select.input {
+    cursor: pointer;
+  }
+  
+  select.input option {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+  
+  /* Special input styles */
+  .otp-input input {
+    text-align: center;
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+    font-weight: 600;
+  }
+  
+  .split-input {
+    width: 80px;
+    padding: 6px 8px;
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    text-align: right;
+  }
+  
+  .comment-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-primary);
+    border-radius: 20px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+  }
+  
+  .comment-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+  }
+  
+  @media (max-width: 768px) {
+    .input {
+      padding: 12px;
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+  }
+  
