@@ -26,7 +26,7 @@ const ExpensesTab = ({ groupId, members }) => {
   const [isEditing, setIsEditing] = useState(false)
   const { token, user } = useAuth()
   const userId = user?.id || null
-  const API_URL = process.env.API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
   const { notification, hideNotification, showSuccess, showConfirm, showError } = useNotification()
   useEffect(() => {
@@ -37,7 +37,7 @@ const ExpensesTab = ({ groupId, members }) => {
 
   const fetchExpenses = async (groupId) => {
     try {
-      const response = await fetch(`${API_URL}/expenses/${groupId}/expenses`, {
+      const response = await fetch(`${REACT_APP_API_URL}/expenses/${groupId}/expenses`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -69,7 +69,7 @@ const ExpensesTab = ({ groupId, members }) => {
         formData.append("receipt", expenseData.receipt);  // assuming file input is `receipt`
       }
 
-      const response = await fetch(`${API_URL}/expenses/${groupId}/add`, {
+      const response = await fetch(`${REACT_APP_API_URL}/expenses/${groupId}/add`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -105,7 +105,7 @@ const ExpensesTab = ({ groupId, members }) => {
 
   const fetchCommentCounts = async (expenseId) => {
     try {
-      const response = await fetch(`${API_URL}/expenses/comment-count/${expenseId}`, {
+      const response = await fetch(`${REACT_APP_API_URL}/expenses/comment-count/${expenseId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -126,7 +126,7 @@ const ExpensesTab = ({ groupId, members }) => {
 
   const fetchExpenseShare = async (expenseId) => {
     try {
-      const response = await fetch(`${API_URL}/expenses/${expenseId}/share`, {
+      const response = await fetch(`${REACT_APP_API_URL}/expenses/${expenseId}/share`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -163,7 +163,7 @@ const ExpensesTab = ({ groupId, members }) => {
       async () => {
         setDeletingExpense(true)
         try {
-          const response = await fetch(`${API_URL}/expenses/${expenseId}`, {
+          const response = await fetch(`${REACT_APP_API_URL}/expenses/${expenseId}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
@@ -207,7 +207,7 @@ const ExpensesTab = ({ groupId, members }) => {
         formData.append("receipt", updatedExpense.receipt);
       }
 
-      const response = await fetch(`${API_URL}/expenses/${groupId}/${updatedExpense.id}`, {
+      const response = await fetch(`${REACT_APP_API_URL}/expenses/${groupId}/${updatedExpense.id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -304,12 +304,12 @@ const ExpensesTab = ({ groupId, members }) => {
 
             {expense.receipt_url && (
               <a
-                href={`${API_URL}/${expense.receipt_url.replace(/\\/g, "/")}`}
+                href={`${REACT_APP_API_URL}/${expense.receipt_url.replace(/\\/g, "/")}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <img
-                  src={`${API_URL}/${expense.receipt_url.replace(/\\/g, "/")}`}
+                  src={`${REACT_APP_API_URL}/${expense.receipt_url.replace(/\\/g, "/")}`}
                   alt="Receipt"
                   style={{ maxWidth: "100px", borderRadius: "8px", cursor: "zoom-in" }}
                 />

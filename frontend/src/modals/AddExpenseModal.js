@@ -7,7 +7,7 @@ import Button from "../components/Button"
 
 const AddExpenseModal = ({ isOpen, onClose, onSubmit, groupMembers, isEditing, setIsEditing, selectedExpense, expenseShare, existingReceiptUrl }) => {
 
-  const API_URL = process.env.API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
   const [formData, setFormData] = useState({
     description: "",
     amount: "",
@@ -305,7 +305,7 @@ const AddExpenseModal = ({ isOpen, onClose, onSubmit, groupMembers, isEditing, s
           <p style={{ marginTop: "8px", fontSize: "0.85rem" }}>
             Existing file:{" "}
             <a
-              href={`${API_URL}/${existingReceiptUrl.replace(/\\/g, "/")}`}
+              href={`${REACT_APP_API_URL}/${existingReceiptUrl.replace(/\\/g, "/")}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: "#2563eb", textDecoration: "underline" }}

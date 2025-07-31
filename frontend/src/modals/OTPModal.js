@@ -15,7 +15,7 @@ const OTPModal = ({ isOpen, onClose, email, onSuccess }) => {
   const [countdown, setCountdown] = useState(60)
   const [canResend, setCanResend] = useState(false)
   const { notification, hideNotification, showSuccess } = useNotification()
-  const API_URL = process.env.API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
   useEffect(() => {
     if (isOpen && countdown > 0) {
@@ -40,7 +40,7 @@ const OTPModal = ({ isOpen, onClose, email, onSuccess }) => {
 
     try {
       // Mock OTP verification
-      const response = await fetch(`${API_URL}/auth/verify-otp`,{
+      const response = await fetch(`${REACT_APP_API_URL}/auth/verify-otp`,{
         method:"POST",
         headers:{
           "Content-Type":"application/json"
@@ -74,7 +74,7 @@ const OTPModal = ({ isOpen, onClose, email, onSuccess }) => {
 
     try {
       // Mock resend OTP
-      const response = await fetch(`${API_URL}/auth/resend-otp`,{
+      const response = await fetch(`${REACT_APP_API_URL}/auth/resend-otp`,{
         method:"POST",
         headers:{
           "Content-Type":"application/json"

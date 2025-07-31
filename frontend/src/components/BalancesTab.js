@@ -19,7 +19,7 @@ const BalancesTab = ({ groupId }) => {
   const [addingSettlement, setAddingSettlement] = useState(false)
   const [prefilledData, setPrefilledData] = useState({})
   const { notification, hideNotification, showError, showSuccess } = useNotification()
-  const API_URL = process.env.API_URL
+  const REACT_APP_REACT_APP_API_URL = process.env.REACT_APP_REACT_APP_API_URL
   const { user, token } = useAuth()
   const userId = user?.id
 
@@ -30,7 +30,7 @@ const BalancesTab = ({ groupId }) => {
 
   const fetchBalances = async (groupId) => {
     try {
-      const response = await fetch(`${API_URL}/balances/${groupId}`, {
+      const response = await fetch(`${REACT_APP_REACT_APP_API_URL}/balances/${groupId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -47,7 +47,7 @@ const BalancesTab = ({ groupId }) => {
 
   const fetchMyBalances = async (groupId) => {
     try {
-      const response = await fetch(`${API_URL}/balances/${groupId}/my-balances`, {
+      const response = await fetch(`${REACT_APP_REACT_APP_API_URL}/balances/${groupId}/my-balances`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -65,7 +65,7 @@ const BalancesTab = ({ groupId }) => {
   const sendReminder = async (settlement) => {
     setSendingReminder(true)
     try {
-      const response = await fetch(`${API_URL}/settlements/${groupId}/payment-reminder`, {
+      const response = await fetch(`${REACT_APP_REACT_APP_API_URL}/settlements/${groupId}/payment-reminder`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ const BalancesTab = ({ groupId }) => {
   const handleAddSettlement = async (prefilledData) => {
     setAddingSettlement(true)
     try{
-      const response = await fetch(`${API_URL}/settlements/${groupId}/add`, {
+      const response = await fetch(`${REACT_APP_REACT_APP_API_URL}/settlements/${groupId}/add`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

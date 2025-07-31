@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
   const [erros, setErrors] = useState({})
-  const API_URL = process.env.APPI_URL
+  const REACT_APP_API_URL = process.env.APPI_URL
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token")
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserDetails = async () => {
         try {
-            const response = await fetch(`${API_URL}/auth/user-details`, {
+            const response = await fetch(`${REACT_APP_API_URL}/auth/user-details`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

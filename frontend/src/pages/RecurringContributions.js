@@ -25,12 +25,12 @@ const RecurringContributions = () => {
     const { token } = useAuth()
     const navigate = useNavigate()
     const { notification, hideNotification, showSuccess, showConfirm, showError } = useNotification()
-    const API_URL = process.env.API_URL
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
     const fetchGroups = async () => {
         setErrors({})
         try {
-            const response = await fetch(`${API_URL}/groups/my-groups`, {
+            const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -56,7 +56,7 @@ const RecurringContributions = () => {
 
     const fetchActiveRecurrinContributions = async () => {
         try {
-            const response = await fetch(`${API_URL}/settlements/my-recurring`, {
+            const response = await fetch(`${REACT_APP_API_URL}/settlements/my-recurring`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -90,7 +90,7 @@ const RecurringContributions = () => {
     const handleAddContribution = async (contributionData) => {
         setAddingRecurring(true)
         try {
-            const response = await fetch(`${API_URL}/settlements/recurring`, {
+            const response = await fetch(`${REACT_APP_API_URL}/settlements/recurring`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -124,7 +124,7 @@ const RecurringContributions = () => {
     const handleEditContribution = async (editData) => {
         setEditRecurring(true)
         try {
-            const response = await fetch(`${API_URL}/settlements/update-recurring/${editData.id}`, {
+            const response = await fetch(`${REACT_APP_API_URL}/settlements/update-recurring/${editData.id}`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -163,7 +163,7 @@ const RecurringContributions = () => {
             `Are you sure you want to ${action} "${contribution.description}"?`,
             async () => {
                 try {
-                    const response = await fetch(`${API_URL}/settlements/update-recurring/${id}`, {
+                    const response = await fetch(`${REACT_APP_API_URL}/settlements/update-recurring/${id}`, {
                         method: "PUT",
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -205,7 +205,7 @@ const RecurringContributions = () => {
             async () => {
                 setDeleteRecurring(true)
                 try {
-                    const response = await fetch(`${API_URL}/settlements/delete-recurring/${id}`, {
+                    const response = await fetch(`${REACT_APP_API_URL}/settlements/delete-recurring/${id}`, {
                         method: "DELETE",
                         headers: {
                             Authorization: `Bearer ${token}`,

@@ -11,7 +11,7 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false)
   const navigate = useNavigate()
   const dropdownRef = useRef(null)
-  const API_URL = process.env.API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -82,7 +82,7 @@ const Navbar = () => {
               }}
             >
               <img
-                src={`${API_URL}/${user.profile_picture?.replace(/\\/g, "/")}`}
+                src={`${REACT_APP_API_URL}/${user.profile_picture?.replace(/\\/g, "/")}`}
                 alt="Profile"
                 style={{
                   width: "100%",

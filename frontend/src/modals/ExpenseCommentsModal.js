@@ -14,14 +14,14 @@ const ExpenseCommentsModal = ({ isOpen, onClose, expense, commentCounts }) => {
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const { token, user } = useAuth()
-  const API_URL = process.env.API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
   const { notification, hideNotification, showError } = useNotification()
 
   const emojis = ["👍", "👎", "😊", "😢", "😮", "❤️", "🔥", "💯"]
 
   const fetchComments = async () => {
     try {
-      const response = await fetch(`${API_URL}/expenses/${expense.id}/comments`, {
+      const response = await fetch(`${REACT_APP_API_URL}/expenses/${expense.id}/comments`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -49,7 +49,7 @@ const ExpenseCommentsModal = ({ isOpen, onClose, expense, commentCounts }) => {
 
     setLoading(true)
     try {
-      const response = await fetch(`${API_URL}/expenses/${expense.id}/comment`, {
+      const response = await fetch(`${REACT_APP_API_URL}/expenses/${expense.id}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const ExpenseCommentsModal = ({ isOpen, onClose, expense, commentCounts }) => {
 
   const deleteComment = async (commentId) => {
     try {
-      const response = await fetch(`${API_URL}/expenses/${expense.id}/${commentId}`, {
+      const response = await fetch(`${REACT_APP_API_URL}/expenses/${expense.id}/${commentId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -18,7 +18,7 @@ const Register = () => {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const API_URL = process.env.API_URL;
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
   const handleChange = (e) => {
     setFormData({
@@ -75,7 +75,7 @@ const Register = () => {
 
     try {
       // Mock API call
-      const response = await fetch(`${API_URL}/auth/register`, {
+      const response = await fetch(`${REACT_APP_API_URL}/auth/register`, {
         method:"POST",
         headers:{
           "Content-Type":"application/json"

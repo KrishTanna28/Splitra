@@ -15,7 +15,7 @@ const ReportsTab = ({ groupId }) => {
   const [summary, setSummary] = useState(null)
   const { notification, hideNotification, showSuccess, showError } = useNotification()
   const { token } = useAuth()
-  const API_URL = process.env.API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -24,7 +24,7 @@ const ReportsTab = ({ groupId }) => {
         const month = today.getMonth() + 1
         const year = today.getFullYear()
 
-        const res = await fetch(`${API_URL}/reports/summary?groupId=${groupId}&month=${month}&year=${year}`, {
+        const res = await fetch(`${REACT_APP_API_URL}/reports/summary?groupId=${groupId}&month=${month}&year=${year}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -71,7 +71,7 @@ const ReportsTab = ({ groupId }) => {
 
   const handleExportCSV = async () => {
     try {
-      const response = await fetch(`${API_URL}/reports/export/${groupId}/csv`, {
+      const response = await fetch(`${REACT_APP_API_URL}/reports/export/${groupId}/csv`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -98,7 +98,7 @@ const ReportsTab = ({ groupId }) => {
 
   const handleExportPDF = async () => {
     try {
-      const response = await fetch(`${API_URL}/reports/export/${groupId}/pdf`, {
+      const response = await fetch(`${REACT_APP_API_URL}/reports/export/${groupId}/pdf`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

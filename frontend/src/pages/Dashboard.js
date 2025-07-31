@@ -25,14 +25,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({})
   const [creatingGroup, setCreatingGroup] = useState(false);
-  const API_URL = process.env.API_URL;
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const userId = user.id;
   const userName = user.name;
 
   const fetchGroupMemberCount = async (groupId) => {
     setErrors({})
     try {
-      const response = await fetch(`${API_URL}/groups/${groupId}/member-count`, {
+      const response = await fetch(`${REACT_APP_API_URL}/groups/${groupId}/member-count`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -53,7 +53,7 @@ const Dashboard = () => {
 
   const fetchTotalExpenses = async (groupId) => {
     try {
-      const response = await fetch(`${API_URL}/expenses/${groupId}/total-expenses`, {
+      const response = await fetch(`${REACT_APP_API_URL}/expenses/${groupId}/total-expenses`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -76,7 +76,7 @@ const Dashboard = () => {
 
   const fetchBalances = async (groupId) => {
     try {
-      const response = await fetch(`${API_URL}/balances/${groupId}/my-balances`, {
+      const response = await fetch(`${REACT_APP_API_URL}/balances/${groupId}/my-balances`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -98,7 +98,7 @@ const Dashboard = () => {
   const fetchGroups = async () => {
     setErrors({})
     try {
-      const response = await fetch(`${API_URL}/groups/my-groups`, {
+      const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -137,7 +137,7 @@ const Dashboard = () => {
     setCreatingGroup(true);
 
     try {
-      const response = await fetch(`${API_URL}/groups/create`, {
+      const response = await fetch(`${REACT_APP_API_URL}/groups/create`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

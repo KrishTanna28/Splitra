@@ -19,7 +19,7 @@ const GroupInfo = ({ members , onMemberAdded, groupId}) => {
   const [groupInfo, setGroupInfo] = useState(null)
   const [errors, setErrors] = useState({})
   const navigate = useNavigate()
-  const API_URL = process.env.API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
   const [addingMember, setAddingMember] = useState(false);
   const [groupMembers, setGroupMembers] = useState(members || []);
 
@@ -61,7 +61,7 @@ const GroupInfo = ({ members , onMemberAdded, groupId}) => {
   const fetchGroupInfo = async (groupId) => {
     setErrors({})
     try {
-      const response = await fetch(`${API_URL}/groups/my-groups`, {
+      const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,7 +82,7 @@ const GroupInfo = ({ members , onMemberAdded, groupId}) => {
   const handleAddMember = async (memberData) => {
   setAddingMember(true);
   try {
-    const response = await fetch(`${API_URL}/groups/${groupId}/add-member`, {
+    const response = await fetch(`${REACT_APP_API_URL}/groups/${groupId}/add-member`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -116,7 +116,7 @@ const GroupInfo = ({ members , onMemberAdded, groupId}) => {
 const handleLeaveGroup = async () => {
   setLeavingGroup(true)
   try{
-    const response = await fetch(`${API_URL}/groups/${groupId}/remove-member`, {
+    const response = await fetch(`${REACT_APP_API_URL}/groups/${groupId}/remove-member`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -196,7 +196,7 @@ const handleLeaveGroup = async () => {
       }}
     >
       {member.profile_picture ? (<img
-        src={`${API_URL}/${member.profile_picture?.replace(/\\/g, "/")}`}
+        src={`${REACT_APP_API_URL}/${member.profile_picture?.replace(/\\/g, "/")}`}
         alt="Profile"
         style={{
           width: "100%",

@@ -11,7 +11,7 @@ const UPIQRModal = ({ isOpen, onClose }) => {
   const [qrData, setQrData] = useState(null)
   const [errors, setErrors] = useState({})
   const [user, setUser] = useState({})
-  const API_URL = process.env.API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
   useEffect(() => {
     fetchQRCode()
     fetchUserDetails()
@@ -20,7 +20,7 @@ const UPIQRModal = ({ isOpen, onClose }) => {
   const fetchQRCode = async () => {
       if (user?.upi_id) {
         try {
-          const response = await fetch(`${API_URL}/settlements/${user.id}/upi-qr?amount=0`, {
+          const response = await fetch(`${REACT_APP_API_URL}/settlements/${user.id}/upi-qr?amount=0`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -39,7 +39,7 @@ const UPIQRModal = ({ isOpen, onClose }) => {
 
     const fetchUserDetails = async () =>{
       try{
-        const response = await fetch(`${API_URL}/auth/user-details`, {
+        const response = await fetch(`${REACT_APP_API_URL}/auth/user-details`, {
           headers:{
             Authorization:`Bearer ${token}`
           }

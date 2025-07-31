@@ -19,7 +19,7 @@ const Profile = () => {
 
     const [isEditing, setIsEditing] = useState(false)
     const [loading, setLoading] = useState(false)
-    const API_URL = process.env.API_URL
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
     // Form data
     const [formData, setFormData] = useState({
@@ -111,7 +111,7 @@ const Profile = () => {
             form.append("profile_picture", profilePicture)
         }
 
-        const response = await fetch(`${API_URL}/auth/update-profile`, {
+        const response = await fetch(`${REACT_APP_API_URL}/auth/update-profile`, {
             method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -186,7 +186,7 @@ const Profile = () => {
                                     />
                                 ) : user.profilePicture ? (
                                     <img
-                                        src={`${API_URL}/${user.profilePicture}`}
+                                        src={`${REACT_APP_API_URL}/${user.profilePicture}`}
                                         alt="Profile"
                                         className="profile-image-simple"
                                     />

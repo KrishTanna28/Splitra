@@ -9,7 +9,7 @@ import OTPModal from "../modals/OTPModal"
 import "../styles/auth.css"
 import LoadingModal from "../components/LoadingModal"
 
-const API_URL = process.env.API_URL
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -42,7 +42,7 @@ const Login = () => {
     setErrors({})
 
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
+      const response = await fetch(`${REACT_APP_API_URL}/auth/login`, {
         method:"POST",
         headers:{
           "Content-Type":"application/json"

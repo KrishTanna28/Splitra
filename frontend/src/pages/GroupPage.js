@@ -19,7 +19,7 @@ const GroupPage = () => {
   const [activeTab, setActiveTab] = useState("info")
   const [groupInfo, setGroupInfo] = useState(null)
   const [errors, setErrors] = useState({})
-  const API_URL = process.env.API_URL;
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [groupMembers, setGroupMembers] = useState([])
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const GroupPage = () => {
 
   const fetchGroupinfo = async (groupId) => {
     try {
-      const response = await fetch(`${API_URL}/groups/my-groups`, {
+      const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -50,7 +50,7 @@ const GroupPage = () => {
   const fetchGroupMembers = async (groupId) => {
     setErrors({})
     try {
-      const response = await fetch(`${API_URL}/groups/${groupId}/members`, {
+      const response = await fetch(`${REACT_APP_API_URL}/groups/${groupId}/members`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

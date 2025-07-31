@@ -21,7 +21,7 @@ const SettlementsTab = ({ groupId, members }) => {
   const { user, token } = useAuth()
   const navigate = useNavigate()
   const userName = user?.name || "You"
-  const API_URL = process.env.API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
   const { notification, hideNotification, showError, showSuccess } = useNotification()
 
@@ -31,7 +31,7 @@ const SettlementsTab = ({ groupId, members }) => {
 
   const fetchSettlements = async () => {
     try{
-      const response = await fetch(`${API_URL}/settlements/${groupId}`,{
+      const response = await fetch(`${REACT_APP_API_URL}/settlements/${groupId}`,{
         headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -51,7 +51,7 @@ const SettlementsTab = ({ groupId, members }) => {
   const handleAddSettlement = async (settlementData) => {
     setAddingSettlement(true)
     try{
-      const response = await fetch(`${API_URL}/settlements/${groupId}/add`, {
+      const response = await fetch(`${REACT_APP_API_URL}/settlements/${groupId}/add`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
