@@ -15,7 +15,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-    origin: 'https://splitra.vercel.app/', // allow requests from React frontend
+    origin: 'https://splitra.vercel.app', // allow requests from React frontend
     credentials: true // allow cookies & headers like Authorization
   }));
 app.use(express.json());
