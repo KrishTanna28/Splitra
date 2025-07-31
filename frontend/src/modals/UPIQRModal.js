@@ -11,8 +11,7 @@ const UPIQRModal = ({ isOpen, onClose }) => {
   const [qrData, setQrData] = useState(null)
   const [errors, setErrors] = useState({})
   const [user, setUser] = useState({})
-  const API_URL = process.env.API_URL || "http://localhost:5000"
-
+  const API_URL = process.env.API_URL
   useEffect(() => {
     fetchQRCode()
     fetchUserDetails()

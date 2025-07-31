@@ -15,7 +15,7 @@ const OTPModal = ({ isOpen, onClose, email, onSuccess }) => {
   const [countdown, setCountdown] = useState(60)
   const [canResend, setCanResend] = useState(false)
   const { notification, hideNotification, showSuccess } = useNotification()
-  const API_URL = "http://localhost:5000"
+  const API_URL = process.env.API_URL
 
   useEffect(() => {
     if (isOpen && countdown > 0) {

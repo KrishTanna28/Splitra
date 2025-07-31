@@ -18,7 +18,7 @@ const Register = () => {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const API_URL = process.env.API_URL || "http://localhost:5000";
+  const API_URL = process.env.API_URL;
 
   const handleChange = (e) => {
     setFormData({

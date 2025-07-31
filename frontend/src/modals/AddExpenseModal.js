@@ -7,7 +7,7 @@ import Button from "../components/Button"
 
 const AddExpenseModal = ({ isOpen, onClose, onSubmit, groupMembers, isEditing, setIsEditing, selectedExpense, expenseShare, existingReceiptUrl }) => {
 
-  const API_URL = process.env.API_URL || "http://localhost:5000"
+  const API_URL = process.env.API_URL
   const [formData, setFormData] = useState({
     description: "",
     amount: "",

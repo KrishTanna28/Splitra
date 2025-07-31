@@ -19,7 +19,7 @@ const GroupInfo = ({ members , onMemberAdded, groupId}) => {
   const [groupInfo, setGroupInfo] = useState(null)
   const [errors, setErrors] = useState({})
   const navigate = useNavigate()
-  const API_URL = process.env.API_URL || "http://localhost:5000";
+  const API_URL = process.env.API_URL
   const [addingMember, setAddingMember] = useState(false);
   const [groupMembers, setGroupMembers] = useState(members || []);
 

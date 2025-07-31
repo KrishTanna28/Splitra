@@ -15,7 +15,7 @@ const ReportsTab = ({ groupId }) => {
   const [summary, setSummary] = useState(null)
   const { notification, hideNotification, showSuccess, showError } = useNotification()
   const { token } = useAuth()
-  const API_URL = process.env.API_URL || "http://localhost:5000"
+  const API_URL = process.env.API_URL
 
   useEffect(() => {
     const fetchSummary = async () => {

@@ -26,7 +26,7 @@ const ExpensesTab = ({ groupId, members }) => {
   const [isEditing, setIsEditing] = useState(false)
   const { token, user } = useAuth()
   const userId = user?.id || null
-  const API_URL = process.env.API_URL || "http://localhost:5000"
+  const API_URL = process.env.API_URL
 
   const { notification, hideNotification, showSuccess, showConfirm, showError } = useNotification()
   useEffect(() => {

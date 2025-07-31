@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
   const [erros, setErrors] = useState({})
-  const API_URL = process.env.APPI_URL || "http://localhost:5000"
+  const API_URL = process.env.APPI_URL
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token")

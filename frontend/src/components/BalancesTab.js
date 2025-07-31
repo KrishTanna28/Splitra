@@ -19,7 +19,7 @@ const BalancesTab = ({ groupId }) => {
   const [addingSettlement, setAddingSettlement] = useState(false)
   const [prefilledData, setPrefilledData] = useState({})
   const { notification, hideNotification, showError, showSuccess } = useNotification()
-  const API_URL = process.env.API_URL || "http://localhost:5000"
+  const API_URL = process.env.API_URL
   const { user, token } = useAuth()
   const userId = user?.id
 

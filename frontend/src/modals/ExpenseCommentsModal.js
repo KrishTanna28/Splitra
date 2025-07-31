@@ -14,7 +14,7 @@ const ExpenseCommentsModal = ({ isOpen, onClose, expense, commentCounts }) => {
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const { token, user } = useAuth()
-  const API_URL = process.env.API_URL || "http://localhost:5000"
+  const API_URL = process.env.API_URL
   const { notification, hideNotification, showError } = useNotification()
 
   const emojis = ["👍", "👎", "😊", "😢", "😮", "❤️", "🔥", "💯"]

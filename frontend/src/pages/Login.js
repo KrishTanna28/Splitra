@@ -9,7 +9,7 @@ import OTPModal from "../modals/OTPModal"
 import "../styles/auth.css"
 import LoadingModal from "../components/LoadingModal"
 
-const API_URL = "http://localhost:5000"
+const API_URL = process.env.API_URL
 
 const Login = () => {
   const [formData, setFormData] = useState({

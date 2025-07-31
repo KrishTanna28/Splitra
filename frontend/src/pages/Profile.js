@@ -19,7 +19,7 @@ const Profile = () => {
 
     const [isEditing, setIsEditing] = useState(false)
     const [loading, setLoading] = useState(false)
-    const API_URL = process.env.API_URL || "http://localhost:5000"
+    const API_URL = process.env.API_URL
 
     // Form data
     const [formData, setFormData] = useState({

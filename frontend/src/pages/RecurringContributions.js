@@ -25,7 +25,7 @@ const RecurringContributions = () => {
     const { token } = useAuth()
     const navigate = useNavigate()
     const { notification, hideNotification, showSuccess, showConfirm, showError } = useNotification()
-    const API_URL = process.env.API_URL || "http://localhost:5000"
+    const API_URL = process.env.API_URL
 
     const fetchGroups = async () => {
         setErrors({})

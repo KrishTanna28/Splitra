@@ -21,7 +21,7 @@ const SettlementsTab = ({ groupId, members }) => {
   const { user, token } = useAuth()
   const navigate = useNavigate()
   const userName = user?.name || "You"
-  const API_URL = process.env.API_URL || "http://localhost:5000"
+  const API_URL = process.env.API_URL
 
   const { notification, hideNotification, showError, showSuccess } = useNotification()
 
