@@ -9,6 +9,7 @@ import { useNotification } from "../hooks/useNotification"
 import NotificationModal from "./NotificationModal"
 import { useAuth } from "../context/AuthContext"
 import LoadingModal from "./LoadingModal"
+import { useNavigate } from "react-router-dom"
 
 const SettlementsTab = ({ groupId, members }) => {
   const [settlements, setSettlements] = useState([])
@@ -18,6 +19,7 @@ const SettlementsTab = ({ groupId, members }) => {
   const [selectedUser, setSelectedUser] = useState(null)
   const [ errors, setErrors ] = useState({})
   const { user, token } = useAuth()
+  const navigate = useNavigate()
   const userName = user?.name || "You"
   const API_URL = process.env.API_URL || "http://localhost:5000"
 
@@ -83,10 +85,10 @@ const SettlementsTab = ({ groupId, members }) => {
     }
   }
 
-  // const handleShowQR = (user) => {
-  //   setSelectedUser(user)
-  //   setShowQR(true)
-  // }
+  const handleShowQR = (user) => {
+    setSelectedUser(user)
+    setShowQR(true)
+  }
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-IN", {
@@ -110,6 +112,10 @@ const SettlementsTab = ({ groupId, members }) => {
     return date.toLocaleString("en-IN", options);
   }
 
+  const handleProfileNavigate = () =>{
+    navigate("/profile")
+  }
+
   const getBalanceColor = (settlement) => {
     if (settlement.fromName === userName) return "negative"
     if (settlement.toName === userName) return "positive"
@@ -118,7 +124,7 @@ const SettlementsTab = ({ groupId, members }) => {
 
   return (
     <div className="settlements-tab">
-      {/* <div className="tab-header">
+      <div className="tab-header">
         <h3>Settlements</h3>
         <Button onClick={() => setShowAddSettlement(true)}>Record Payment</Button>
       </div>
@@ -127,11 +133,11 @@ const SettlementsTab = ({ groupId, members }) => {
         <Card className="qr-section">
           <h4>Receive Payment</h4>
           <p>Show QR code for others to pay you</p>
-          <Button variant="secondary" onClick={() => handleShowQR({ name: "You", upiId: "you@upi" })}>
+          <Button variant="secondary" onClick={() => user.upi_id ? handleShowQR({ name: "You", upiId: "you@upi" }) : handleProfileNavigate()}>
             Show My QR Code
           </Button>
         </Card>
-      </div> */}
+      </div>
 
       <div className="settlements-list">
         <div style={{display:"flex", justifyContent:"space-between"}}><h3>Recent Settlements</h3><Button onClick={() => setShowAddSettlement(true)}>Record Payment</Button></div>
@@ -172,7 +178,7 @@ const SettlementsTab = ({ groupId, members }) => {
         prefilledData={null}
       />
 
-      <UPIQRModal isOpen={showQR} onClose={() => setShowQR(false)} user={selectedUser} />
+      <UPIQRModal isOpen={showQR} onClose={() => setShowQR(false)} />
 
       <NotificationModal
         isOpen={notification.isOpen}

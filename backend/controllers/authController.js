@@ -183,32 +183,59 @@ Split Payment App Team
   }
 };
 
-exports.addUPI = async (req, res, next) => {
+exports.updateProfile = async (req, res, next) => {
   const userId = req.user.id;
-  const { upi_id } = req.body;
+  const { name, email, upi_id } = req.body;
+  const profile_picture = req.file ? req.file.path : undefined;
 
   try {
-    // Update user details
+    const fields = [];
+    const values = [];
+    let index = 1;
+
+    if (name !== undefined) {
+      fields.push(`name = $${index++}`);
+      values.push(name);
+    }
+    if (email !== undefined) {
+      fields.push(`email = $${index++}`);
+      values.push(email);
+    }
+    if (upi_id !== undefined) {
+      fields.push(`upi_id = $${index++}`);
+      values.push(upi_id);
+    }
+    if (profile_picture !== undefined) {
+      fields.push(`profile_picture = $${index++}`);
+      values.push(profile_picture);
+    }
+
+    if (fields.length === 0) {
+      return res.status(400).json({ message: "No fields to update" });
+    }
+
+    values.push(userId);
+
     const result = await pool.query(
-      'UPDATE users SET upi_id = $1 WHERE id = $2 RETURNING *',
-      [upi_id, userId]
+      `UPDATE users SET ${fields.join(", ")} WHERE id = $${index} RETURNING *`,
+      values
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    res.json({ message: 'UPI added successfully', user: result.rows[0] });
+    res.json({ message: 'Profile updated successfully', user: result.rows[0] });
   } catch (err) {
     next(err);
   }
-}
+};
 
 exports.getUserDetails = async (req, res, next) => {
   const userId = req.user.id;
 
   try {
-    const result = await pool.query('SELECT id, name, email, upi_id FROM users WHERE id = $1', [userId]);
+    const result = await pool.query('SELECT id, name, email, upi_id, profile_picture FROM users WHERE id = $1', [userId]);
     const user = result.rows[0];
 
     if (!user) {

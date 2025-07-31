@@ -2,27 +2,25 @@ const pool = require('../config/db');
 const QRCode = require('qrcode');
 const sendEmail = require("../utils/mailer");
 
-exports.generateUPIQRCode = async (req, res) => {
+exports.generateMyUPIQRCode = async (req, res) => {
   const userId = req.user.id;
-  const receiver_id = req.params.id;
-  const userResult = await pool.query('SELECT upi_id FROM users WHERE id=$1', [receiver_id]);
-  const upiId = userResult.rows[0].upi_id;
-  const amount = await pool.query(
-    `SELECT amount FROM settlements WHERE paid_by = $1 AND paid_to = $2`,
-    [receiver_id, userId]
-  );
-
-  if (!upiId || !amount) {
-    return res.status(400).json({ message: 'upiId, name, and amount are required' });
-  }
-
-  const upiUrl = `upi://pay?pa=${upiId}&am=${amount}&cu=INR`;
+  const amount = 0;
 
   try {
+    const userResult = await pool.query("SELECT upi_id FROM users WHERE id = $1", [userId]);
+    const upiId = userResult.rows[0]?.upi_id;
+
+    if (!upiId) {
+      return res.status(400).json({ message: "UPI ID not found for user" });
+    }
+
+    const upiUrl = `upi://pay?pa=${upiId}&am=${amount}&cu=INR`;
     const qr = await QRCode.toDataURL(upiUrl);
+
     res.json({ upiUrl, qrCode: qr });
   } catch (err) {
-    res.status(500).json({ message: 'Failed to generate QR code' });
+    console.error(err);
+    res.status(500).json({ message: "Failed to generate QR code" });
   }
 };
 
@@ -253,26 +251,26 @@ exports.getMyRecurringContributions = async (req, res, next) => {
     let next = new Date(start);
 
     while (next <= now) {
-  switch (frequency) {
-    case 'daily':
-      next.setDate(next.getDate() + 1);
-      break;
-    case 'weekly':
-      next.setDate(next.getDate() + 7);
-      break;
-    case 'monthly':
-      next.setMonth(next.getMonth() + 1);
-      break;
-    case 'quarterly':
-      next.setMonth(next.getMonth() + 3);
-      break;
-    case 'yearly':
-      next.setFullYear(next.getFullYear() + 1);
-      break;
-    default:
-      return null; // unknown frequency
-  }
-}
+      switch (frequency) {
+        case 'daily':
+          next.setDate(next.getDate() + 1);
+          break;
+        case 'weekly':
+          next.setDate(next.getDate() + 7);
+          break;
+        case 'monthly':
+          next.setMonth(next.getMonth() + 1);
+          break;
+        case 'quarterly':
+          next.setMonth(next.getMonth() + 3);
+          break;
+        case 'yearly':
+          next.setFullYear(next.getFullYear() + 1);
+          break;
+        default:
+          return null; // unknown frequency
+      }
+    }
 
     return next.toISOString().split('T')[0]; // format as yyyy-mm-dd
   };

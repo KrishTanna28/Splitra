@@ -184,16 +184,34 @@ const handleLeaveGroup = async () => {
 
           <div className="members-list">
             {groupMembers.map((member) => (
-              <div key={member.id} className="member-item">
-                <div className="member-info">
-                  <div className="member-avatar">{member.name.charAt(0).toUpperCase()}</div>
-                  <div className="member-details">
-                    <span className="member-name">{member.name}</span>
-                    <span className="member-email">{member.email}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+  <div key={member.id} className="member-item" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
+    <div
+      className="member-image-wrapper"
+      style={{
+        width: "40px",
+        height: "40px",
+        borderRadius: "50%",
+        overflow: "hidden",
+        flexShrink: 0,
+      }}
+    >
+      {member.profile_picture ? (<img
+        src={`${API_URL}/${member.profile_picture?.replace(/\\/g, "/")}`}
+        alt="Profile"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+        }}
+      />) : (<div className="member-avatar">{(member.name?.[0] || "") + (member.name?.split(" ")[1]?.[0] || "")}</div>)}
+    </div>
+    <div className="member-details">
+      <span className="member-name" style={{ display: "block", fontWeight: "bold" }}>{member.name}</span>
+      <span className="member-email" style={{ fontSize: "0.85em", color: "#666" }}>{member.email}</span>
+    </div>
+  </div>
+))}
           </div>
           <br></br>
           <Button variant="danger" size="small" onClick={() => handleLeaveGroup()}>Leave Group</Button>

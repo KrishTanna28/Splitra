@@ -168,7 +168,7 @@ exports.getGroupMembers = async (req, res, next) => {
 
   try {
     const result = await pool.query(
-      `SELECT u.id, u.name, u.email
+      `SELECT u.id, u.name, u.email, u.profile_picture
        FROM group_members gm
        JOIN users u ON gm.user_id = u.id
        WHERE gm.group_id = $1`,

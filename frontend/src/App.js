@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard"
 import GroupPage from "./pages/GroupPage"
 import RecurringContributions from "./pages/RecurringContributions"
 import ProtectedRoute from "./components/ProtectedRoute"
+import Profile from "./pages/Profile"
 import "./styles/global.css"
 import "./styles/themes.css"
 
@@ -45,6 +46,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <RecurringContributions />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
                     </ProtectedRoute>
                   }
                 />

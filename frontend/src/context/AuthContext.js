@@ -13,19 +13,47 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState({})
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [erros, setErrors] = useState({})
+  const API_URL = process.env.APPI_URL || "http://localhost:5000"
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token")
-    const userData = localStorage.getItem("user")
-    if (storedToken && userData) {
+    if (storedToken) {
       setToken(storedToken)
-      setUser(JSON.parse(userData))
     }
     setLoading(false)
   }, [])
+
+  const fetchUserDetails = async () => {
+        try {
+            const response = await fetch(`${API_URL}/auth/user-details`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Normalize path once
+                const userWithCleanPath = {
+                    ...data.user,
+                    profilePicture: data.user.profile_picture?.replace(/\\/g, "/"),
+                };
+
+                setUser(userWithCleanPath);
+            }
+        } catch (error) {
+            setErrors("Unable to fetch user details")
+        }
+    }
+
+    useEffect(()=>{
+      fetchUserDetails()
+    },[token])
 
   const login = (userData, token) => {
     localStorage.setItem("token", token)

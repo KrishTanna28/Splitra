@@ -2,13 +2,16 @@
 import { useState, useRef, useEffect } from "react"
 import { useTheme } from "../context/ThemeContext"
 import { useAuth } from "../context/AuthContext"
+import { useNavigate } from "react-router-dom"
 import "../styles/navbar.css"
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme()
   const { user, logout } = useAuth()
   const [showDropdown, setShowDropdown] = useState(false)
+  const navigate = useNavigate()
   const dropdownRef = useRef(null)
+  const API_URL = process.env.API_URL || "http://localhost:5000"
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -42,6 +45,11 @@ const Navbar = () => {
     setShowDropdown(false)
   }
 
+  const handleProfileNavigation = () => {
+    navigate("/profile")
+    setShowDropdown(false)
+  }
+
   const handleLogout = () => {
     logout()
     setShowDropdown(false)
@@ -56,9 +64,36 @@ const Navbar = () => {
         </h1>
         <div className="navbar-actions">
           <div className="profile-dropdown" ref={dropdownRef}>
-            <button className="profile-button" onClick={handleProfileClick} aria-label="Profile menu">
-              <div className="profile-avatar">{getInitials(user?.name)}</div>
+            <button
+              className="profile-button"
+              onClick={handleProfileClick}
+              aria-label="Profile menu"
+              style={{
+                width: "40px",
+                height: "40px",
+                padding: 0,
+                border: "none",
+                borderRadius: "50%",
+                overflow: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "transparent",
+              }}
+            >
+              <img
+                src={`${API_URL}/${user.profile_picture?.replace(/\\/g, "/")}`}
+                alt="Profile"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "50%",
+                  display: "block",
+                }}
+              />
             </button>
+
 
             {showDropdown && (
               <div className="dropdown-menu">
@@ -75,6 +110,11 @@ const Navbar = () => {
                 <button className="dropdown-item" onClick={handleThemeToggle}>
                   <span className="dropdown-icon">{theme === "light" ? "🌙" : "☀️"}</span>
                   <span>Switch to {theme === "light" ? "Dark" : "Light"} Mode</span>
+                </button>
+
+                <button className="dropdown-item" onClick={handleProfileNavigation}>
+                  <span className="dropdown-icon">👤</span>
+                  <span>Profile</span>
                 </button>
 
                 <button className="dropdown-item logout-item" onClick={handleLogout}>

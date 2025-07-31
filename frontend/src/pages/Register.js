@@ -157,7 +157,7 @@ const Register = () => {
             required
           />
 
-          {/* <Input
+          <Input
             label="UPI ID (Optional)"
             name="upiId"
             placeholder="yourname@upi"
@@ -165,7 +165,7 @@ const Register = () => {
             onChange={handleChange}
             error={errors.upiId}
             // required removed to make it optional
-          /> */}
+          />
 
           <Button type="submit" loading={loading} className="auth-submit">
             Create Account
