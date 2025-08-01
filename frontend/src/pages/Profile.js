@@ -215,7 +215,6 @@ const Profile = () => {
                                     <label htmlFor="profile-picture" className="btn btn-secondary btn-small">
                                         Change Picture
                                     </label>
-                                    {profilePicturePreview && (
                                         <Button
                                             variant="ghost"
                                             size="small"
@@ -226,7 +225,6 @@ const Profile = () => {
                                         >
                                             Remove
                                         </Button>
-                                    )}
                                 </div>
                             )}
                         </div>
