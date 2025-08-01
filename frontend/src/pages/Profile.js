@@ -16,6 +16,7 @@ const Profile = () => {
     const { token, login, user } = useAuth()
     const navigate = useNavigate()
     const { notification, hideNotification, showSuccess, showError } = useNotification()
+    const [removePicture, setRemovePicture] = useState(false)
 
     const [isEditing, setIsEditing] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -111,11 +112,14 @@ const Profile = () => {
                 form.append("profile_picture", profilePicture)
             }
 
+            if (removePicture) {
+            form.append("remove_picture", "true") 
+        }
+
             const response = await fetch(`${REACT_APP_API_URL}/auth/update-profile`, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`
-                    // Do NOT set Content-Type manually here!
                 },
                 body: form,
             })
@@ -126,6 +130,7 @@ const Profile = () => {
                 showSuccess("Profile updated successfully!", "Profile Updated")
                 login(data.user, token) // Update auth context
                 setIsEditing(false)
+                setRemovePicture(false)
             } else {
                 showError(data.message || "Failed to update profile", "Update Failed")
             }
@@ -180,13 +185,7 @@ const Profile = () => {
                         {/* Profile Picture Section */}
                         <div className="profile-picture-section-simple">
                             <div className="current-picture-simple">
-                                {profilePicturePreview ? (
-                                    <img
-                                        src={profilePicturePreview}
-                                        alt="Profile"
-                                        className="profile-image-simple"
-                                    />
-                                ) : user.profilePicture ? (
+                                {user.profilePicture ? (
                                     <img
                                         src={user.profile_picture}
                                         alt="Profile"
@@ -221,6 +220,7 @@ const Profile = () => {
                                             onClick={() => {
                                                 setProfilePicture(null)
                                                 setProfilePicturePreview(null)
+                                                setRemovePicture(true)
                                             }}
                                         >
                                             Remove
