@@ -159,13 +159,13 @@ const ExpensesTab = ({ groupId, members }) => {
     fetchCommentCounts(allExpenses.id);
   }, commentCounts)
 
-  const handleDeleteExpense = (expenseId, description) => {
+  const handleDeleteExpense = (expense) => {
     showConfirm(
-      `Are you sure you want to delete "${description}"? This action cannot be undone.`,
+      `Are you sure you want to delete "${expense.description}"? This action cannot be undone.`,
       async () => {
         setDeletingExpense(true)
         try {
-          const response = await fetch(`${REACT_APP_API_URL}/expenses/${expenseId}`, {
+          const response = await fetch(`${REACT_APP_API_URL}/expenses/${expense.id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
@@ -278,13 +278,15 @@ const ExpensesTab = ({ groupId, members }) => {
     return icons[category] || "📝"
   }
 
-  if (load && allExpenses.length !== 0) {
+  useState(()=>{
+    if (load) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Expenses"
         type="pulse"
       />
   }
+  }, [allExpenses.length])
 
   return (
     <div className="expenses-tab">
@@ -357,7 +359,7 @@ const ExpensesTab = ({ groupId, members }) => {
                 Edit
               </Button>)}
               {userId === expense.paid_by_id && (
-                <Button variant="danger" size="small" onClick={() => handleDeleteExpense(expense.id)}>
+                <Button variant="danger" size="small" onClick={() => handleDeleteExpense(expense)}>
                   Delete
                 </Button>
               )}
