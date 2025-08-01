@@ -3,13 +3,21 @@ const pool = require('../config/db');
 const sendEmail = require("../utils/mailer");
 
 // 🕐 Run every day at midnight
-cron.schedule('0 0 * * *', async () => {
+cron.schedule('* * * * *', async () => {
   console.log('⏳ Running auto-recurring-expense scheduler...');
 
   const today = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
   const todayDate = new Date(today);
 
   try {
+
+    await pool.query(`DELETE FROM groups g
+WHERE NOT EXISTS (
+  SELECT 1
+  FROM group_members gm
+  WHERE gm.group_id = g.id
+)
+      `)
 
     const query = `
       SELECT * FROM recurring_contributions
