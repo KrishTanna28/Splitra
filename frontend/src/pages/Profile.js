@@ -229,10 +229,9 @@ const Profile = () => {
                                         variant="ghost"
                                         size="small"
                                         onClick={() => {
+                                            setRemovePicture(true)
                                             setProfilePicture(null)
                                             setProfilePicturePreview(null)
-                                            setRemovePicture(true)
-                                            setFormData({ ...formData, profile_picture: null });
                                         }}
                                     >
                                         Remove
