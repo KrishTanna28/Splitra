@@ -16,8 +16,10 @@ const ReportsTab = ({ groupId }) => {
   const { notification, hideNotification, showSuccess, showError } = useNotification()
   const { token } = useAuth()
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+  const [loadingSummary , setLoadingSummary] = useState(true)
 
   useEffect(() => {
+    setLoadingSummary(true)
     const fetchSummary = async () => {
       try {
         const today = new Date()
@@ -54,6 +56,8 @@ const ReportsTab = ({ groupId }) => {
         })
       } catch (err) {
         console.error("Failed to fetch report summary:", err)
+      }finally{
+        setLoadingSummary(false)
       }
     }
 
@@ -139,6 +143,14 @@ const ReportsTab = ({ groupId }) => {
       backgroundColor: `#${Math.floor(Math.random()*16777215).toString(16)}`,
     })),
   };
+
+  if (loadingSettlements) {
+    return <LoadingModal
+        isOpen={true}
+        message="Fetching Summary"
+        type="pulse"
+      />
+  }
 
   return (
     <div className="reports-tab">
