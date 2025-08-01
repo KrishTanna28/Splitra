@@ -122,6 +122,14 @@ const SettlementsTab = ({ groupId, members }) => {
     return "neutral"
   }
 
+  if (settlements.length === 0) {
+    return <LoadingModal
+        isOpen={true}
+        message="Fetching Settlements"
+        type="pulse"
+      />
+  }
+
   return (
     <div className="settlements-tab">
       <div className="tab-header">

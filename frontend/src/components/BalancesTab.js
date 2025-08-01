@@ -144,6 +144,14 @@ const BalancesTab = ({ groupId }) => {
     return "neutral"
   }
 
+  if (balances.length === 0) {
+    return <LoadingModal
+        isOpen={true}
+        message="Fetching Balances"
+        type="pulse"
+      />
+  }
+
   return (
     <div className="balances-tab">
       <div className="tab-header">

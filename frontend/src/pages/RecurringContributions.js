@@ -310,6 +310,14 @@ const RecurringContributions = () => {
         return sum + getMonthlyEquivalent(contribution);
     }, 0);
 
+    if (recurringContributions.length === 0) {
+    return <LoadingModal
+        isOpen={true}
+        message="Fetching Recurring contributions"
+        type="pulse"
+      />
+  }
+
     return (
         <div className="recurring-contributions">
             <Navbar title="Recurring Contributions" />
