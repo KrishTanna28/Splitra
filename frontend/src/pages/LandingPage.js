@@ -1,15 +1,18 @@
 "use client"
 
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useTheme } from "../context/ThemeContext"
 import Button from "../components/Button"
 import Card from "../components/Card"
 import "../styles/landing-page.css"
+import { useAuth } from "../context/AuthContext"
 
 const LandingPage = () => {
   const { theme, toggleTheme } = useTheme()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const {user} = useAuth()
+  const navigate = useNavigate()
 
   const features = [
     {
@@ -28,6 +31,12 @@ const LandingPage = () => {
       description: "Automate regular payments like rent, subscriptions, or shared bills",
     },
   ]
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard")
+    }
+  }, [user, navigate])
 
   return (
     <div className="landing-page">
