@@ -214,7 +214,7 @@ const Profile = () => {
                                     <label htmlFor="profile-picture" className="btn btn-secondary btn-small">
                                         Change Picture
                                     </label>
-                                        {user.profilePicture === null && <Button
+                                    <Button
                                             variant="ghost"
                                             size="small"
                                             onClick={() => {
@@ -225,7 +225,7 @@ const Profile = () => {
                                             }}
                                         >
                                             Remove
-                                        </Button>}
+                                        </Button>
                                 </div>
                             )}
                         </div>
