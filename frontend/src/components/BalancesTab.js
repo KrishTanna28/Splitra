@@ -144,7 +144,7 @@ const BalancesTab = ({ groupId }) => {
     return "neutral"
   }
 
-  if (balances.length === 0) {
+  if (settlements.length === 0) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Balances"
