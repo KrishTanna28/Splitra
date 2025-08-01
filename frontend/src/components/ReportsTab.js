@@ -128,8 +128,6 @@ const ReportsTab = ({ groupId }) => {
     }
   }
 
-  if (!summary) return <div className="loading">Loading reports...</div>
-
   const months = [...new Set(summary.categoryBreakdown.map(item => item.month))];
   const categories = [...new Set(summary.categoryBreakdown.map(item => item.category))];
 
