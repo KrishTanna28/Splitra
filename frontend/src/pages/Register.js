@@ -19,10 +19,6 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-  const [showPasswords, setShowPasswords] = useState({
-    password: false,
-    confirmPassword: false,
-  })
 
   const handleChange = (e) => {
     setFormData({
@@ -35,13 +31,6 @@ const Register = () => {
         [e.target.name]: "",
       })
     }
-  }
-
-  const togglePasswordVisibility = (field) => {
-    setShowPasswords((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }))
   }
 
   const validateForm = () => {
@@ -147,46 +136,26 @@ const Register = () => {
             error={errors.email}
             required
           />
-<div className="password-input-container">
+
           <Input
             label="Password"
-            type={showPasswords.password ? "text" : "password"}
+            type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
             required
           />
-          <button
-              type="button"
-              className="password-toggle-btn"
-              onClick={() => togglePasswordVisibility("password")}
-              aria-label={showPasswords.password ? "Hide password" : "Show password"}
-            >
-              {showPasswords.password ? "👁️" : "👁️‍🗨️"}
-            </button>
-          </div>
-
-          <div className="password-input-container">
 
           <Input
             label="Confirm Password"
-            type={showPasswords.password ? "text" : "password"}
+            type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
             error={errors.confirmPassword}
             required
           />
-          <button
-              type="button"
-              className="password-toggle-btn"
-              onClick={() => togglePasswordVisibility("confirmPassword")}
-              aria-label={showPasswords.confirmPassword ? "Hide password" : "Show password"}
-            >
-              {showPasswords.confirmPassword ? "👁️" : "👁️‍🗨️"}
-            </button>
-          </div>
 
           <Input
             label="UPI ID (Optional)"

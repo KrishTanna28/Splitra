@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
@@ -8,6 +6,7 @@ import Button from "../components/Button"
 import OTPModal from "../modals/OTPModal"
 import "../styles/auth.css"
 import LoadingModal from "../components/LoadingModal"
+import { Eye, EyeOff } from "lucide-react" // install lucide-react or use your own icons
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
@@ -19,9 +18,9 @@ const Login = () => {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [showOTP, setShowOTP] = useState(false)
+  const [showPassword, setShowPassword] = useState(false) // 👁️ visibility toggle
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   const { login } = useAuth()
-  const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -35,10 +34,6 @@ const Login = () => {
         [e.target.name]: "",
       })
     }
-  }
-
-   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
   }
 
   const handleSubmit = async (e) => {
@@ -108,29 +103,36 @@ const Login = () => {
             error={errors.email}
             required
           />
-          <div className="password-input-container">
-          <Input
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            error={errors.password}
-            required
-          />
-           <button
-              type="button"
-              className="password-toggle-btn"
-              onClick={togglePasswordVisibility}
-              aria-label={showPassword ? "Hide password" : "Show password"}
+
+          {/* 👁️ Password input with eye toggle */}
+          <div className="input-group password-group">
+            <Input
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              error={errors.password}
+              required
+            />
+            <span
+              className="password-toggle-icon"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "12px",
+                top: "35px",
+                cursor: "pointer"
+              }}
             >
-              {showPassword ? "👁️" : "👁️‍🗨️"}
-            </button>
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </span>
           </div>
 
-<Button type="submit" disabled={false} className="auth-submit">
+          <Button type="submit" disabled={false} className="auth-submit">
             Sign In
           </Button>
+
           <LoadingModal
             isOpen={loading}
             message="Signing you in..."

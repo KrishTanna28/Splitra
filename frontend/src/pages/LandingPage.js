@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState , useEffect} from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useTheme } from "../context/ThemeContext"
 import Button from "../components/Button"
