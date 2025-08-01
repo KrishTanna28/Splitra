@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import LoadingModal from "../components/LoadingModal"
 
 const ExpensesTab = ({ groupId, members }) => {
-  const [allExpenses, setAllExpenses] = useState([])
+  const [allExpenses, setAllExpenses] = useState(null)
   const [showAddExpense, setShowAddExpense] = useState(false)
   const [expenseShare, setExpenseShare] = useState([])
   const [expenseSharePerUser, setExpenseSharePerUser] = useState([])
@@ -276,7 +276,7 @@ const ExpensesTab = ({ groupId, members }) => {
     return icons[category] || "📝"
   }
 
-  if (allExpenses.length === 0) {
+  if (!allExpenses) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Expenses"
