@@ -98,7 +98,17 @@ const Navbar = () => {
             {showDropdown && (
               <div className="dropdown-menu">
                 <div className="dropdown-header">
-                  <div className="dropdown-avatar">{getInitials(user?.name)}</div>
+                  <img
+                    src={user.profile_picture}
+                    alt="Profile"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                      display: "block",
+                    }}
+                  />
                   <div className="dropdown-user-info">
                     <span className="dropdown-name">{user?.name}</span>
                     <span className="dropdown-email">{user?.email}</span>

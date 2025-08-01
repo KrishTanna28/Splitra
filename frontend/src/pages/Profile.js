@@ -188,9 +188,15 @@ const Profile = () => {
                                     />
                                 ) : user.profilePicture ? (
                                     <img
-                                        src={`${REACT_APP_API_URL}/${user.profilePicture}`}
+                                        src={user.profile_picture}
                                         alt="Profile"
-                                        className="profile-image-simple"
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "cover",
+                                            borderRadius: "50%",
+                                            display: "block",
+                                        }}
                                     />
                                 ) : (
                                     <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>

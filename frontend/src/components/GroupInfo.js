@@ -10,7 +10,7 @@ import { useNotification } from "../hooks/useNotification"
 import NotificationModal from "./NotificationModal"
 import LoadingModal from "../components/LoadingModal"
 
-const GroupInfo = ({ members , onMemberAdded, groupId}) => {
+const GroupInfo = ({ members, onMemberAdded, groupId }) => {
   const [showAddMember, setShowAddMember] = useState(false)
   const { notification, hideNotification, showSuccess, showError, showWarning } = useNotification()
   const [loading, setLoading] = useState(false)
@@ -31,7 +31,7 @@ const GroupInfo = ({ members , onMemberAdded, groupId}) => {
     const date = new Date(isoDateString);
     const now = new Date();
     const diffMs = now - date;
-  
+
     const diffInSeconds = Math.floor(diffMs / 1000);
     const diffInMinutes = Math.floor(diffInSeconds / 60);
     const diffInHours = Math.floor(diffInMinutes / 60);
@@ -39,7 +39,7 @@ const GroupInfo = ({ members , onMemberAdded, groupId}) => {
     const diffInWeeks = Math.floor(diffInDays / 7);
     const diffInMonths = Math.floor(diffInDays / 30);
     const diffInYears = Math.floor(diffInDays / 365);
-  
+
     if (diffInYears >= 1) {
       return diffInYears === 1 ? "1 year ago" : `${diffInYears} years ago`;
     } else if (diffInMonths >= 1) {
@@ -72,73 +72,73 @@ const GroupInfo = ({ members , onMemberAdded, groupId}) => {
         const group = data.groups.find((g) => g.id === Number(groupId))
         setGroupInfo(group);
       } else {
-        setErrors({general : "Failed to fetch groups"});
+        setErrors({ general: "Failed to fetch groups" });
       }
     } catch (err) {
-      setErrors({general : "Something went wrong."});
-    } 
+      setErrors({ general: "Something went wrong." });
+    }
   };
 
   const handleAddMember = async (memberData) => {
-  setAddingMember(true);
-  try {
-    const response = await fetch(`${REACT_APP_API_URL}/groups/${groupId}/add-member`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ userEmail: memberData.userEmail }),
-      credentials: "include"
-    });
+    setAddingMember(true);
+    try {
+      const response = await fetch(`${REACT_APP_API_URL}/groups/${groupId}/add-member`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userEmail: memberData.userEmail }),
+        credentials: "include"
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      // Throw error to be caught by modal
-      throw new Error(data.message || "Failed to add member");
-    }else{
-      setTimeout(() => {
-      setAddingMember(false);
-      showSuccess("Member added successfully")
-      }, 1500);
+      if (!response.ok) {
+        // Throw error to be caught by modal
+        throw new Error(data.message || "Failed to add member");
+      } else {
+        setTimeout(() => {
+          setAddingMember(false);
+          showSuccess("Member added successfully")
+        }, 1500);
+      }
+
+      // Success actions
+      onMemberAdded?.();
+      return true;
+    } catch (error) {
+      // Rethrow for modal to handle
+      throw error;
     }
-    
-    // Success actions
-    onMemberAdded?.();
-    return true;
-  } catch (error) {
-    // Rethrow for modal to handle
-    throw error;
-  } 
-};
+  };
 
-const handleLeaveGroup = async () => {
-  setLeavingGroup(true)
-  try{
-    const response = await fetch(`${REACT_APP_API_URL}/groups/${groupId}/remove-member`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+  const handleLeaveGroup = async () => {
+    setLeavingGroup(true)
+    try {
+      const response = await fetch(`${REACT_APP_API_URL}/groups/${groupId}/remove-member`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if(response.ok){
-      setTimeout(()=>{
+      if (response.ok) {
+        setTimeout(() => {
+          setLeavingGroup(false)
+        }, 1500)
+        navigate('/dashboard')
+        showSuccess("Group left successfully")
+      } else {
         setLeavingGroup(false)
-      },1500)
-      navigate('/dashboard')
-      showSuccess("Group left successfully")
-    }else{
-      setLeavingGroup(false)
-      showWarning(data.message)
+        showWarning(data.message)
+      }
+    } catch (error) {
+      showError("Unable to leave group")
     }
-  }catch(error){
-    showError("Unable to leave group")
   }
-}
 
 
   useEffect(() => {
@@ -147,10 +147,10 @@ const handleLeaveGroup = async () => {
 
   if (!groupInfo) {
     return <LoadingModal
-        isOpen={true}
-        message="Fetching Group Info"
-        type="pulse"
-      />
+      isOpen={true}
+      message="Fetching Group Info"
+      type="pulse"
+    />
   }
 
   return (
@@ -176,7 +176,7 @@ const handleLeaveGroup = async () => {
       <Card>
         <div className="members-section">
           <div className="section-header">
-            <h3>Members ({groupMembers.length})</h3> 
+            <h3>Members ({groupMembers.length})</h3>
             <Button size="small" onClick={() => setShowAddMember(true)}>
               Add Member
             </Button>
@@ -184,34 +184,35 @@ const handleLeaveGroup = async () => {
 
           <div className="members-list">
             {groupMembers.map((member) => (
-  <div key={member.id} className="member-item" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
-    <div
-      className="member-image-wrapper"
-      style={{
-        width: "40px",
-        height: "40px",
-        borderRadius: "50%",
-        overflow: "hidden",
-        flexShrink: 0,
-      }}
-    >
-      {member.profile_picture ? (<img
-        src={`${REACT_APP_API_URL}/${member.profile_picture?.replace(/\\/g, "/")}`}
-        alt="Profile"
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          display: "block",
-        }}
-      />) : (<div className="member-avatar">{(member.name?.[0] || "") + (member.name?.split(" ")[1]?.[0] || "")}</div>)}
-    </div>
-    <div className="member-details">
-      <span className="member-name" style={{ display: "block", fontWeight: "bold" }}>{member.name}</span>
-      <span className="member-email" style={{ fontSize: "0.85em", color: "#666" }}>{member.email}</span>
-    </div>
-  </div>
-))}
+              <div key={member.id} className="member-item" style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
+                <div
+                  className="member-image-wrapper"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    flexShrink: 0,
+                  }}
+                >
+                  {member.profile_picture ? (<img
+                    src={user.profile_picture}
+                    alt="Profile"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                      display: "block",
+                    }}
+                  />) : (<div className="member-avatar">{(member.name?.[0] || "") + (member.name?.split(" ")[1]?.[0] || "")}</div>)}
+                </div>
+                <div className="member-details">
+                  <span className="member-name" style={{ display: "block", fontWeight: "bold" }}>{member.name}</span>
+                  <span className="member-email" style={{ fontSize: "0.85em", color: "#666" }}>{member.email}</span>
+                </div>
+              </div>
+            ))}
           </div>
           <br></br>
           <Button variant="danger" size="small" onClick={() => handleLeaveGroup()}>Leave Group</Button>
@@ -230,7 +231,7 @@ const handleLeaveGroup = async () => {
         cancelText={notification.cancelText}
         onConfirm={notification.onConfirm}
       />
-<LoadingModal
+      <LoadingModal
         isOpen={addingMember}
         message="Adding Member..."
         submessage="Please wait while we add the member to the group"
