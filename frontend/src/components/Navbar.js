@@ -97,7 +97,8 @@ const Navbar = () => {
 
             {showDropdown && (
               <div className="dropdown-menu">
-                <div className="dropdown-header" style={{
+               <div className="dropdown-header">
+                  <span style={{
                 width: "40px",
                 height: "40px",
                 padding: 0,
@@ -110,16 +111,16 @@ const Navbar = () => {
                 background: "transparent",
               }}>
                   <img
-                    src={user.profile_picture}
-                    alt="Profile"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                      display: "block",
-                    }}
-                  />
+                src={user.profile_picture}
+                alt="Profile"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "50%",
+                  display: "block",
+                }}
+              /> </span>
                   <div className="dropdown-user-info">
                     <span className="dropdown-name">{user?.name}</span>
                     <span className="dropdown-email">{user?.email}</span>
