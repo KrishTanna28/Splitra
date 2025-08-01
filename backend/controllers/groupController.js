@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const sendEmail = require("../utils/mailer")
 
 exports.createGroup = async (req, res, next) => {
   const { name, description } = req.body;
