@@ -65,7 +65,7 @@ const Profile = () => {
                 showError("Please select a valid image file", "Invalid File Type")
                 return
             }
-
+            setProfilePicturePreview(file)
             setProfilePicture(file)
             const reader = new FileReader()
             reader.onload = (e) => setProfilePicturePreview(e.target.result)
@@ -113,8 +113,8 @@ const Profile = () => {
             }
 
             if (removePicture) {
-            form.append("remove_picture", "true") 
-        }
+                form.append("remove_picture", "true")
+            }
 
             const response = await fetch(`${REACT_APP_API_URL}/auth/update-profile`, {
                 method: "PUT",
@@ -185,7 +185,19 @@ const Profile = () => {
                         {/* Profile Picture Section */}
                         <div className="profile-picture-section-simple">
                             <div className="current-picture-simple">
-                                {user.profilePicture ? (
+                                {profilePicturePreview ? (
+                                    <img
+                                        src={profilePicturePreview}
+                                        alt="Preview"
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "cover",
+                                            borderRadius: "50%",
+                                            display: "block",
+                                        }}
+                                    />
+                                ) : user.profile_picture ? (
                                     <img
                                         src={user.profile_picture}
                                         alt="Profile"
@@ -200,7 +212,6 @@ const Profile = () => {
                                 ) : (
                                     <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>
                                 )}
-
                             </div>
                             {isEditing && (
                                 <div className="picture-actions-simple">
@@ -215,17 +226,17 @@ const Profile = () => {
                                         Change Picture
                                     </label>
                                     <Button
-                                            variant="ghost"
-                                            size="small"
-                                            onClick={() => {
-                                                setProfilePicture(null)
-                                                setProfilePicturePreview(null)
-                                                setRemovePicture(true)
-                                                showSuccess("Click on \"Save Changes\" to remove the profile picture")
-                                            }}
-                                        >
-                                            Remove
-                                        </Button>
+                                        variant="ghost"
+                                        size="small"
+                                        onClick={() => {
+                                            setProfilePicture(null)
+                                            setProfilePicturePreview(null)
+                                            setRemovePicture(true)
+                                            showSuccess("Click on \"Save Changes\" to remove the profile picture")
+                                        }}
+                                    >
+                                        Remove
+                                    </Button>
                                 </div>
                             )}
                         </div>
