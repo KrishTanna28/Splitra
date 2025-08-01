@@ -21,6 +21,7 @@ const Login = () => {
   const [showOTP, setShowOTP] = useState(false)
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   const { login } = useAuth()
+  const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -34,6 +35,10 @@ const Login = () => {
         [e.target.name]: "",
       })
     }
+  }
+
+   const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
   }
 
   const handleSubmit = async (e) => {
@@ -103,16 +108,25 @@ const Login = () => {
             error={errors.email}
             required
           />
-
+          <div className="password-input-container">
           <Input
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
             required
           />
+           <button
+              type="button"
+              className="password-toggle-btn"
+              onClick={togglePasswordVisibility}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? "👁️" : "👁️‍🗨️"}
+            </button>
+          </div>
 
 <Button type="submit" disabled={false} className="auth-submit">
             Sign In
