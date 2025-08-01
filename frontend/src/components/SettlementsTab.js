@@ -152,7 +152,7 @@ const SettlementsTab = ({ groupId, members }) => {
       </div>
 
       <div className="settlements-list">
-        <div style={{display:"flex", justifyContent:"space-between"}}><h3>Recent Settlements</h3><Button onClick={() => setShowAddSettlement(true)}>Record Payment</Button></div>
+        <div style={{display:"flex", justifyContent:"space-between"}}><h3>Recent Settlements</h3></div>
         <br></br>
         {Array.isArray(settlements) && settlements.map((settlement) => (
           <Card key={settlement.id} className="settlement-card">
