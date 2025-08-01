@@ -220,7 +220,7 @@ const ReportsTab = ({ groupId }) => {
             </div>
             <div className="insight-item">
               <span className="insight-label">Average per person:</span>
-              <span className="insight-value">{formatCurrency((summary.avgPerPerson ?? 0) / 4)}</span>
+              <span className="insight-value">{formatCurrency((summary.avgPerPerson ?? 0))}</span>
             </div>
           </div>
         </Card>

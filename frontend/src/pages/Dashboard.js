@@ -10,8 +10,6 @@ import "../styles/dashboard.css"
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import LoadingModal from "../components/LoadingModal"
-import GroupPage from "./GroupPage"
-import RecurringContributions from "./RecurringContributions"
 
 
 const Dashboard = () => {
@@ -26,8 +24,12 @@ const Dashboard = () => {
   const [errors, setErrors] = useState({})
   const [creatingGroup, setCreatingGroup] = useState(false);
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-  const userId = user.id;
-  const userName = user.name;
+
+  useState(()=>{
+    if(!token){
+      navigate("/")
+    }
+  }, [token, navigate])
 
   const fetchGroupMemberCount = async (groupId) => {
     setErrors({})
