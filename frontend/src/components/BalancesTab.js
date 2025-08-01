@@ -10,6 +10,7 @@ import { useNotification } from "../hooks/useNotification"
 import NotificationModal from "./NotificationModal"
 
 const BalancesTab = ({ groupId }) => {
+  const [loadingBalances, setLoadingBalances] = useState(true)
   const [settlements, setSettlements] = useState([])
   const [myBalances, setMyBalances] = useState({})
   const [balances, setBalances] = useState({})
@@ -29,6 +30,7 @@ const BalancesTab = ({ groupId }) => {
   }, [groupId, settlements.length], balances.length)
 
   const fetchBalances = async (groupId) => {
+    setLoadingBalances(true)
     try {
       const response = await fetch(`${REACT_APP_API_URL}/balances/${groupId}`, {
         headers: {
@@ -42,6 +44,8 @@ const BalancesTab = ({ groupId }) => {
       }
     } catch (error) {
       setErrors({ general: `Unable to fetch balances for group ${groupId}` });
+    }finally{
+      setLoadingBalances(false)
     }
   };
 
@@ -144,7 +148,7 @@ const BalancesTab = ({ groupId }) => {
     return "neutral"
   }
 
-  if (settlements.length === 0) {
+  if (loadingBalances) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Balances"

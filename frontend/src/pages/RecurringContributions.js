@@ -14,6 +14,7 @@ import LoadingModal from "../components/LoadingModal"
 import { useApp } from "../context/AppContext"
 
 const RecurringContributions = () => {
+    const [loadingRecurringContributions, setLoadingRecurringContributions] = useState(true)
     const [recurringContributions, setRecurringContributions] = useState([])
     const [showAddModal, setShowAddModal] = useState(false)
     const [editingContribution, setEditingContribution] = useState(null)
@@ -55,6 +56,7 @@ const RecurringContributions = () => {
     }, [recurringContributions.length])
 
     const fetchActiveRecurrinContributions = async () => {
+        setLoadingRecurringContributions(true)
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/my-recurring`, {
                 headers: {
@@ -84,6 +86,8 @@ const RecurringContributions = () => {
             }
         } catch (error) {
             setErrors({ general: "Unable to fetch active contributions" });
+        }finally{
+            setLoadingRecurringContributions(false)
         }
     };
 
@@ -310,7 +314,7 @@ const RecurringContributions = () => {
         return sum + getMonthlyEquivalent(contribution);
     }, 0);
 
-    if (recurringContributions.length === 0) {
+    if (loadingRecurringContributions) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Recurring contributions"

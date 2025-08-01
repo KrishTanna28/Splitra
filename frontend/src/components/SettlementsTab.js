@@ -12,6 +12,7 @@ import LoadingModal from "./LoadingModal"
 import { useNavigate } from "react-router-dom"
 
 const SettlementsTab = ({ groupId, members }) => {
+  const [loadingSettlements, setLoadingSettlements] = useState(true) 
   const [settlements, setSettlements] = useState([])
   const [showAddSettlement, setShowAddSettlement] = useState(false)
   const [addingSettlement, setAddingSettlement] = useState(false)
@@ -30,6 +31,7 @@ const SettlementsTab = ({ groupId, members }) => {
   }, [groupId])
 
   const fetchSettlements = async () => {
+    setLoadingSettlements(true)
     try{
       const response = await fetch(`${REACT_APP_API_URL}/settlements/${groupId}`,{
         headers: {
@@ -45,6 +47,8 @@ const SettlementsTab = ({ groupId, members }) => {
       }
     }catch(error){
       setErrors({general:"Error fetching settlements"})
+    }finally{
+      setLoadingSettlements(false)
     }
   }
 
@@ -122,7 +126,7 @@ const SettlementsTab = ({ groupId, members }) => {
     return "neutral"
   }
 
-  if (settlements.length === 0) {
+  if (loadingSettlements) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Settlements"
