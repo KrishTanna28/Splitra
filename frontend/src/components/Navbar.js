@@ -94,7 +94,7 @@ const Navbar = () => {
                   }}
                 />
               ) : (
-                <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>
+                <div className="profile-placeholder-simple">{getInitials(user.name)}</div>
               )}
             </button>
 
@@ -127,7 +127,7 @@ const Navbar = () => {
                         }}
                       />
                     ) : (
-                      <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>
+                      <div className="profile-placeholder-simple">{getInitials(user.name)}</div>
                     )} </span>
                   <div className="dropdown-user-info">
                     <span className="dropdown-name">{user?.name}</span>
