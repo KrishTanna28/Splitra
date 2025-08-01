@@ -8,6 +8,7 @@ import Button from "./Button"
 import { useNotification } from "../hooks/useNotification"
 import NotificationModal from "./NotificationModal"
 import { useAuth } from "../context/AuthContext"
+import LoadingModal from "./LoadingModal"
 
 // ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, ArcElement, PointElement, Title, Tooltip, Legend)
 
