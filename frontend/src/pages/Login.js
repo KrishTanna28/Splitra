@@ -6,7 +6,7 @@ import Button from "../components/Button"
 import OTPModal from "../modals/OTPModal"
 import "../styles/auth.css"
 import LoadingModal from "../components/LoadingModal"
-import { Eye, EyeOff } from "lucide-react" // install lucide-react or use your own icons
+import { Eye, EyeOff } from "lucide-react" 
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
@@ -18,7 +18,7 @@ const Login = () => {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [showOTP, setShowOTP] = useState(false)
-  const [showPassword, setShowPassword] = useState(false) // 👁️ visibility toggle
+  const [showPassword, setShowPassword] = useState(false) 
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -43,15 +43,15 @@ const Login = () => {
 
     try {
       const response = await fetch(`${REACT_APP_API_URL}/auth/login`, {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
         },
-        body:JSON.stringify({
-          email:formData.email,
-          password:formData.password
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
         }),
-        credentials:"include"
+        credentials: "include"
       })
 
       const data = await response.json();
@@ -60,9 +60,9 @@ const Login = () => {
         throw new Error(data.message || "Login failed. Please try again.")
       }
 
-      if(data.requiresOTP){
+      if (data.requiresOTP) {
         setShowOTP(true)
-      }else{
+      } else {
         setErrors({ general: "Unexpected response from server." })
       }
 
@@ -104,30 +104,28 @@ const Login = () => {
             required
           />
 
-          {/* 👁️ Password input with eye toggle */}
-          <div className="input-group password-group">
-            <Input
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              error={errors.password}
-              required
-            />
+          <Input
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            error={errors.password}
+            required
+          >
             <span
-              className="password-toggle-icon"
               onClick={() => setShowPassword(!showPassword)}
               style={{
                 position: "absolute",
+                top: "50%",
                 right: "12px",
-                top: "35px",
+                transform: "translateY(-50%)",
                 cursor: "pointer"
               }}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
-          </div>
+          </Input>
 
           <Button type="submit" disabled={false} className="auth-submit">
             Sign In

@@ -6,6 +6,7 @@ import Input from "../components/Input"
 import Button from "../components/Button"
 import "../styles/auth.css"
 import LoadingModal from "../components/LoadingModal"
+import { Eye, EyeOff } from "lucide-react" 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleChange = (e) => {
     setFormData({
@@ -76,29 +79,29 @@ const Register = () => {
     try {
       // Mock API call
       const response = await fetch(`${REACT_APP_API_URL}/auth/register`, {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
         },
-        body:JSON.stringify({
-          name:formData.name,
-          email:formData.email,
-          password:formData.password,
-          upi_id:formData.upiId || null
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          upi_id: formData.upiId || null
         }),
-        credentials:"include"
+        credentials: "include"
       })
 
       const data = await response.json();
 
       // Simulate successful registration
-      if(!response.ok){
+      if (!response.ok) {
         console.log(response)
         throw new Error(data.message || "Registration failed. Please try again.")
       }
-        navigate("/login", {
-          state: { message: "Registration successful! Please sign in." },
-        })
+      navigate("/login", {
+        state: { message: "Registration successful! Please sign in." },
+      })
     } catch (error) {
       console.error(error)
       setErrors({ general: "Registration failed. Please try again." })
@@ -139,23 +142,49 @@ const Register = () => {
 
           <Input
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
             required
-          />
+          >
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: "12px",
+                transform: "translateY(-50%)",
+                cursor: "pointer"
+              }}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </span>
+          </Input>
 
           <Input
             label="Confirm Password"
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
             error={errors.confirmPassword}
             required
-          />
+          >
+            <span
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: "12px",
+                transform: "translateY(-50%)",
+                cursor: "pointer"
+              }}
+            >
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </span>
+          </Input>
 
           <Input
             label="UPI ID (Optional)"
@@ -164,7 +193,7 @@ const Register = () => {
             value={formData.upiId}
             onChange={handleChange}
             error={errors.upiId}
-            // required removed to make it optional
+          // required removed to make it optional
           />
 
           <Button type="submit" loading={loading} className="auth-submit">

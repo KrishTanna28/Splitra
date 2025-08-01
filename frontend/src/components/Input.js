@@ -11,7 +11,8 @@ const Input = ({
   required = false,
   disabled = false,
   className = "",
-  name
+  name,
+  children
 }) => {
   return (
     <div className={`input-group ${className}`}>
@@ -21,6 +22,7 @@ const Input = ({
           {required && <span className="required">*</span>}
         </label>
       )}
+       <div style={{ position: "relative" }}>
       <input
         type={type}
         className={`input ${error ? "input-error" : ""}`}
@@ -31,6 +33,8 @@ const Input = ({
         disabled={disabled}
         name={name}
       />
+      {children}
+      </div>
       {error && <span className="error-message">{error}</span>}
     </div>
   )
