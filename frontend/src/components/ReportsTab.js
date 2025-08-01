@@ -189,7 +189,7 @@ const ReportsTab = ({ groupId }) => {
       </div>
 
       <div className="reports-grid">
-        <Card>
+        <Card className="insights-card">
           <h4>Expense Summary</h4>
           <div className="summary-stats">
             <div className="stat-item">
