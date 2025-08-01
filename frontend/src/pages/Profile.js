@@ -221,6 +221,7 @@ const Profile = () => {
                                                 setProfilePicture(null)
                                                 setProfilePicturePreview(null)
                                                 setRemovePicture(true)
+                                                showSuccess("Click on \"Save Changes\" to remove the profile picture")
                                             }}
                                         >
                                             Remove
