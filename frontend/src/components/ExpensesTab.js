@@ -153,7 +153,7 @@ const ExpensesTab = ({ groupId, members }) => {
 
   useEffect(() => {
     fetchExpenses(groupId);
-  }, [groupId, token, allExpenses.length, commentCounts.length]);
+  }, [groupId, token, allExpenses.length, commentCounts]);
 
   useEffect(() => {
     fetchCommentCounts(allExpenses.id);
