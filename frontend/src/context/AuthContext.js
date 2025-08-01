@@ -17,15 +17,17 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
   const [erros, setErrors] = useState({})
-  const REACT_APP_API_URL = process.env.APPI_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token")
-    if (storedToken) {
-      setToken(storedToken)
-    }
-    setLoading(false)
-  }, [])
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+
+    if (storedToken) setToken(storedToken);
+    if (storedUser) setUser(JSON.parse(storedUser));
+
+    setLoading(false);
+  }, []);
 
   const fetchUserDetails = async () => {
         try {
