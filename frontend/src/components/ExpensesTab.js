@@ -160,12 +160,13 @@ const ExpensesTab = ({ groupId, members }) => {
   }, commentCounts)
 
   const handleDeleteExpense = (expense) => {
+    const expenseId = expense.id
     showConfirm(
       `Are you sure you want to delete "${expense.description}"? This action cannot be undone.`,
       async () => {
         setDeletingExpense(true)
         try {
-          const response = await fetch(`${REACT_APP_API_URL}/expenses/${expense.id}`, {
+          const response = await fetch(`${REACT_APP_API_URL}/expenses/${expenseId}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
