@@ -6,8 +6,6 @@ import Input from "../components/Input"
 import Button from "../components/Button"
 import "../styles/auth.css"
 import LoadingModal from "../components/LoadingModal"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -21,18 +19,6 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-
-  const [showPasswords, setShowPasswords] = useState({
-    password: false,
-    confirmPassword: false,
-  })
-
-  const togglePasswordVisibility = (field) => {
-    setShowPasswords((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }))
-  }
 
   const handleChange = (e) => {
     setFormData({
@@ -150,46 +136,26 @@ const Register = () => {
             error={errors.email}
             required
           />
-<div className="password-input-container">
+
           <Input
             label="Password"
-            type={showPasswords.password ? "text" : "password"}
+            type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             error={errors.password}
             required
           />
-          <button
-              type="button"
-              className="password-toggle-btn"
-              onClick={() => togglePasswordVisibility("password")}
-              aria-label={showPasswords.password ? "Hide password" : "Show password"}
-            >
-              <FontAwesomeIcon icon={showPasswords.password ? faEyeSlash : faEye} />
-            </button>
-          </div>
-
-          <div className="password-input-container">
 
           <Input
             label="Confirm Password"
-            type={showPasswords.confirmPassword ? "text" : "password"}
+            type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
             error={errors.confirmPassword}
             required
           />
-          <button
-              type="button"
-              className="password-toggle-btn"
-              onClick={() => togglePasswordVisibility("confirmPassword")}
-              aria-label={showPasswords.confirmPassword ? "Hide password" : "Show password"}
-            >
-              <FontAwesomeIcon icon={showPasswords.confirmPassword ? faEyeSlash : faEye} />
-            </button>
-          </div>
 
           <Input
             label="UPI ID (Optional)"
