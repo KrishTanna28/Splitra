@@ -9,6 +9,7 @@ import { useNotification } from "../hooks/useNotification"
 import NotificationModal from "./NotificationModal"
 import { useAuth } from "../context/AuthContext";
 import LoadingModal from "../components/LoadingModal"
+import { all } from "../../../backend/routes/authRoutes"
 
 const ExpensesTab = ({ groupId, members }) => {
   const [allExpenses, setAllExpenses] = useState([])
@@ -276,7 +277,7 @@ const ExpensesTab = ({ groupId, members }) => {
     return icons[category] || "📝"
   }
 
-  if (!expenses) {
+  if (!allExpenses) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Expenses"
