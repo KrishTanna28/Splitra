@@ -185,7 +185,7 @@ Split Payment App Team
 
 exports.updateProfile = async (req, res, next) => {
   const userId = req.user.id;
-  const { name, email, upi_id } = req.body;
+  const { name, email, upi_id,remove_picture  } = req.body;
   const profile_picture = req.file ? req.file.path : undefined;
 
   try {
@@ -205,7 +205,9 @@ exports.updateProfile = async (req, res, next) => {
       fields.push(`upi_id = $${index++}`);
       values.push(upi_id);
     }
-    if (profile_picture !== undefined) {
+    if (remove_picture === "true") {
+      fields.push(`profile_picture = NULL`);
+    } else if (profile_picture !== undefined) {
       fields.push(`profile_picture = $${index++}`);
       values.push(profile_picture);
     }
