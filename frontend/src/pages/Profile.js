@@ -13,7 +13,7 @@ import LoadingModal from "../components/LoadingModal"
 import "../styles/profile.css"
 
 const Profile = () => {
-    const { token, login , user} = useAuth()
+    const { token, login, user } = useAuth()
     const navigate = useNavigate()
     const { notification, hideNotification, showSuccess, showError } = useNotification()
 
@@ -93,48 +93,48 @@ const Profile = () => {
     }
 
     const handleSave = async () => {
-    const newErrors = validateForm()
-    if (Object.keys(newErrors).length > 0) {
-        setErrors(newErrors)
-        return
-    }
-
-    setLoading(true)
-
-    try {
-        const form = new FormData()
-        form.append("name", formData.name)
-        form.append("email", formData.email)
-        form.append("upi_id", formData.upiId)
-
-        if (profilePicture) {
-            form.append("profile_picture", profilePicture)
+        const newErrors = validateForm()
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors)
+            return
         }
 
-        const response = await fetch(`${REACT_APP_API_URL}/auth/update-profile`, {
-            method: "PUT",
-            headers: {
-                Authorization: `Bearer ${token}`
-                // Do NOT set Content-Type manually here!
-            },
-            body: form,
-        })
+        setLoading(true)
 
-        const data = await response.json()
+        try {
+            const form = new FormData()
+            form.append("name", formData.name)
+            form.append("email", formData.email)
+            form.append("upi_id", formData.upiId)
 
-        if (response.ok) {
-            showSuccess("Profile updated successfully!", "Profile Updated")
-            login(data.user, token) // Update auth context
-            setIsEditing(false)
-        } else {
-            showError(data.message || "Failed to update profile", "Update Failed")
+            if (profilePicture) {
+                form.append("profile_picture", profilePicture)
+            }
+
+            const response = await fetch(`${REACT_APP_API_URL}/auth/update-profile`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                    // Do NOT set Content-Type manually here!
+                },
+                body: form,
+            })
+
+            const data = await response.json()
+
+            if (response.ok) {
+                showSuccess("Profile updated successfully!", "Profile Updated")
+                login(data.user, token) // Update auth context
+                setIsEditing(false)
+            } else {
+                showError(data.message || "Failed to update profile", "Update Failed")
+            }
+        } catch (error) {
+            showError("Something went wrong", "Update Failed")
+        } finally {
+            setLoading(false)
         }
-    } catch (error) {
-        showError("Something went wrong", "Update Failed")
-    } finally {
-        setLoading(false)
     }
-}
 
     const handleCancel = () => {
         // Reset form data to original values
@@ -166,10 +166,11 @@ const Profile = () => {
 
             <div className="profile-content">
                 <div className="profile-header">
-                    <Button variant="ghost" onClick={() => navigate("/dashboard")} className="back-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" fill="currentColor"/>
-              <path d="M32 15H3.41l8.29-8.29-1.41-1.42-10 10a1 1 0 0 0 0 1.41l10 10 1.41-1.41L3.41 17H32z" />
-                    </Button>
+                    <button className="back-btn" onClick={() => navigate("/dashboard")} aria-label="Back to Dashboard">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" fill="currentColor">
+                            <path d="M32 15H3.41l8.29-8.29-1.41-1.42-10 10a1 1 0 0 0 0 1.41l10 10 1.41-1.41L3.41 17H32z" />
+                        </svg>
+                    </button>
                     <h2>My Profile</h2>
                     <p>Manage your account information</p>
                 </div>
