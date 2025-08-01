@@ -276,6 +276,14 @@ const ExpensesTab = ({ groupId, members }) => {
     return icons[category] || "📝"
   }
 
+  if (!expenses) {
+    return <LoadingModal
+        isOpen={true}
+        message="Fetching Expenses"
+        type="pulse"
+      />
+  }
+
   return (
     <div className="expenses-tab">
       <div className="tab-header">
