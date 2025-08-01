@@ -81,46 +81,54 @@ const Navbar = () => {
                 background: "transparent",
               }}
             >
-              <img
-                src={user.profile_picture}
-                alt="Profile"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "50%",
-                  display: "block",
-                }}
-              />
+              {user.profilePicture ? (
+                <img
+                  src={user.profile_picture}
+                  alt="Profile"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                    display: "block",
+                  }}
+                />
+              ) : (
+                <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>
+              )}
             </button>
 
 
             {showDropdown && (
               <div className="dropdown-menu">
-               <div className="dropdown-header">
+                <div className="dropdown-header">
                   <span style={{
-                width: "40px",
-                height: "40px",
-                padding: 0,
-                border: "none",
-                borderRadius: "50%",
-                overflow: "hidden",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "transparent",
-              }}>
-                  <img
-                src={user.profile_picture}
-                alt="Profile"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "50%",
-                  display: "block",
-                }}
-              /> </span>
+                    width: "40px",
+                    height: "40px",
+                    padding: 0,
+                    border: "none",
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "transparent",
+                  }}>
+                    {user.profilePicture ? (
+                      <img
+                        src={user.profile_picture}
+                        alt="Profile"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          borderRadius: "50%",
+                          display: "block",
+                        }}
+                      />
+                    ) : (
+                      <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>
+                    )} </span>
                   <div className="dropdown-user-info">
                     <span className="dropdown-name">{user?.name}</span>
                     <span className="dropdown-email">{user?.email}</span>
