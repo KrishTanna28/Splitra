@@ -82,7 +82,7 @@ const Navbar = () => {
               }}
             >
               <img
-                src={`${REACT_APP_API_URL}/${user.profile_picture?.replace(/\\/g, "/")}`}
+                src={user.profile_picture}
                 alt="Profile"
                 style={{
                   width: "100%",
