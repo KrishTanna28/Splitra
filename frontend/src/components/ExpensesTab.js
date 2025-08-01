@@ -57,9 +57,9 @@ const ExpensesTab = ({ groupId, members }) => {
 
     } catch (error) {
       setErrors({ general: "Failed to fetch expenses. Please try again later." })
-    }finally {
-    setLoadingExpenses(false)
-  }
+    } finally {
+      setLoadingExpenses(false)
+    }
   }
 
   const handleAddExpense = async (expenseData) => {
@@ -143,9 +143,9 @@ const ExpensesTab = ({ groupId, members }) => {
         const userShare = data.share.find((share) => share.user_id === userId);
         const amount = userShare ? parseFloat(userShare.amount) : 0;
         setExpenseSharePerUser((prev) => ({
-        ...prev,
-        [expenseId]: amount,
-      }));
+          ...prev,
+          [expenseId]: amount,
+        }));
       }
     } catch (error) {
       setErrors({ general: "Failed to fetch expense share. Please try again later." });
@@ -281,12 +281,12 @@ const ExpensesTab = ({ groupId, members }) => {
     return icons[category] || "📝"
   }
 
-    if (loadingExpenses) {
+  if (loadingExpenses) {
     return <LoadingModal
-        isOpen={true}
-        message="Fetching Expenses"
-        type="pulse"
-      />
+      isOpen={true}
+      message="Fetching Expenses"
+      type="pulse"
+    />
   }
 
   return (
@@ -317,12 +317,12 @@ const ExpensesTab = ({ groupId, members }) => {
 
             {expense.receipt_url && (
               <a
-                href={`${REACT_APP_API_URL}/${expense.receipt_url.replace(/\\/g, "/")}`}
+                href={expense.receipt_url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <img
-                  src={`${REACT_APP_API_URL}/${expense.receipt_url.replace(/\\/g, "/")}`}
+                  src={expense.receipt_url}
                   alt="Receipt"
                   style={{ maxWidth: "100px", borderRadius: "8px", cursor: "zoom-in" }}
                 />
