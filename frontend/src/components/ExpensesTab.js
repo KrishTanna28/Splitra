@@ -276,7 +276,7 @@ const ExpensesTab = ({ groupId, members }) => {
     return icons[category] || "📝"
   }
 
-  if (!allExpenses) {
+  if (allExpenses.length === 0) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Expenses"
