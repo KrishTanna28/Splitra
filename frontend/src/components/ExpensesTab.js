@@ -11,6 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import LoadingModal from "../components/LoadingModal"
 
 const ExpensesTab = ({ groupId, members }) => {
+  const [load, setLoad] = useState(false)
   const [allExpenses, setAllExpenses] = useState(null)
   const [showAddExpense, setShowAddExpense] = useState(false)
   const [expenseShare, setExpenseShare] = useState([])
@@ -49,6 +50,7 @@ const ExpensesTab = ({ groupId, members }) => {
           fetchCommentCounts(expense.id);
           fetchExpenseShare(expense.id);
         });
+        setLoad(true)
       } else {
         throw new Error(data.message || "Failed to fetch expenses");
       }
@@ -276,7 +278,7 @@ const ExpensesTab = ({ groupId, members }) => {
     return icons[category] || "📝"
   }
 
-  if (!allExpenses) {
+  if (load) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Expenses"
