@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import LoadingModal from "../components/LoadingModal"
 
 const ExpensesTab = ({ groupId, members }) => {
-  const [load, setLoad] = useState(true)
+  const [loadingExpenses, setLoadingExpenses] = useState(true)
   const [allExpenses, setAllExpenses] = useState([])
   const [showAddExpense, setShowAddExpense] = useState(false)
   const [expenseShare, setExpenseShare] = useState([])
@@ -37,6 +37,7 @@ const ExpensesTab = ({ groupId, members }) => {
   }, [members]);
 
   const fetchExpenses = async (groupId) => {
+    setLoadingExpenses(true)
     try {
       const response = await fetch(`${REACT_APP_API_URL}/expenses/${groupId}/expenses`, {
         headers: {
@@ -50,14 +51,15 @@ const ExpensesTab = ({ groupId, members }) => {
           fetchCommentCounts(expense.id);
           fetchExpenseShare(expense.id);
         });
-        setLoad(false)
       } else {
         throw new Error(data.message || "Failed to fetch expenses");
       }
 
     } catch (error) {
       setErrors({ general: "Failed to fetch expenses. Please try again later." })
-    }
+    }finally {
+    setLoadingExpenses(false)
+  }
   }
 
   const handleAddExpense = async (expenseData) => {
@@ -279,15 +281,13 @@ const ExpensesTab = ({ groupId, members }) => {
     return icons[category] || "📝"
   }
 
-  useState(()=>{
-    if (load) {
+    if (loadingExpenses) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Expenses"
         type="pulse"
       />
   }
-  }, [allExpenses.length])
 
   return (
     <div className="expenses-tab">
