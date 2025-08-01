@@ -20,8 +20,8 @@ const ReportsTab = ({ groupId }) => {
   const [loadingSummary , setLoadingSummary] = useState(true)
 
   useEffect(() => {
-    setLoadingSummary(true)
     const fetchSummary = async () => {
+      setLoadingSummary(true)
       try {
         const today = new Date()
         const month = today.getMonth() + 1
