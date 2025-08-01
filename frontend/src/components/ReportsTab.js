@@ -144,7 +144,7 @@ const ReportsTab = ({ groupId }) => {
     })),
   };
 
-  if (loadingSettlements) {
+  if (loadingSummary) {
     return <LoadingModal
         isOpen={true}
         message="Fetching Summary"
