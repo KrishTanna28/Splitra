@@ -91,13 +91,6 @@ const GroupPage = () => {
     }
   }
 
-  if (!groupInfo) {
-    return <div>
-      <button className="back-btn" onClick={() => navigate("/dashboard")}>
-        ← Back to Dashboard
-      </button></div>
-  }
-
   return (
     <div className="group-page">
       <Navbar title="Splitra" />
