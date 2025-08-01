@@ -53,11 +53,30 @@ exports.exportExpensesPDF = async (req, res, next) => {
     doc.pipe(res);
 
     // Header
-    doc.fontSize(24).font('Helvetica-Bold').text('EXPENSE RECEIPT', { align: 'center' });
+    const options = {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    };
+
+    const dateOptions = {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+
+    const generatedDate = new Date().toLocaleDateString("en-IN", dateOptions);
+    const generatedTime = new Date().toLocaleTimeString("en-IN", options);
+
+    doc.fontSize(24).font("Helvetica-Bold").text("EXPENSE RECEIPT", { align: "center" });
     doc.moveDown(0.5);
-    doc.fontSize(16).font('Helvetica').text(groupName, { align: 'center' });
+    doc.fontSize(16).font("Helvetica").text(groupName, { align: "center" });
     doc.moveDown(0.5);
-    doc.fontSize(12).font('Helvetica').text(`Generated on: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`, { align: 'center' });
+    doc.fontSize(12).font("Helvetica").text(`Generated on: ${generatedDate} at ${generatedTime}`, { align: "center" });
+
     doc.moveDown(2);
 
     // Summary
@@ -91,7 +110,7 @@ exports.exportExpensesPDF = async (req, res, next) => {
     doc.fontSize(10).font('Helvetica');
     result.rows.forEach((exp, index) => {
       const rowY = doc.y;
-      
+
       // Check if we need a new page
       if (rowY > 700) {
         doc.addPage();
@@ -104,7 +123,7 @@ exports.exportExpensesPDF = async (req, res, next) => {
       doc.text(exp.category || 'N/A', startX + colWidths[0] + colWidths[1], doc.y);
       doc.text(exp.paid_by, startX + colWidths[0] + colWidths[1] + colWidths[2], doc.y);
       doc.text(`₹${parseFloat(exp.amount).toFixed(2)}`, startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3], doc.y);
-      
+
       doc.moveDown(0.5);
     });
 
