@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext"
 const LandingPage = () => {
   const { theme, toggleTheme } = useTheme()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const {user} = useAuth()
+  const {token} = useAuth()
   const navigate = useNavigate()
 
   const features = [
@@ -33,10 +33,10 @@ const LandingPage = () => {
   ]
 
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate("/dashboard")
     }
-  }, [user, navigate])
+  }, [token, navigate])
 
   return (
     <div className="landing-page">
