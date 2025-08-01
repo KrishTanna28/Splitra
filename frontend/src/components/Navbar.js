@@ -97,7 +97,18 @@ const Navbar = () => {
 
             {showDropdown && (
               <div className="dropdown-menu">
-                <div className="dropdown-header">
+                <div className="dropdown-header" style={{
+                width: "40px",
+                height: "40px",
+                padding: 0,
+                border: "none",
+                borderRadius: "50%",
+                overflow: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "transparent",
+              }}>
                   <img
                     src={user.profile_picture}
                     alt="Profile"
