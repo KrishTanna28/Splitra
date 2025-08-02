@@ -159,9 +159,9 @@ const SettlementsTab = ({ groupId, members }) => {
             <div className={`balance-item ${getBalanceColor(settlement)}`}>
               <div className="settlement-details">
                 <div className="settlement-parties">
-                  <span className="from">{settlement.fromName}</span>
+                  <span className="from">{settlement.fromName === user.name? "You" : settlement.fromName}</span>
                   <span className="arrow">→</span>
-                  <span className="to">{settlement.toName}</span>
+                  <span className="to">{settlement.toName === user.name? "You" : settlement.toName}</span>
                 </div>
                 <div className="settlement-amount">{formatCurrency(settlement.amount)}</div>
               </div>
