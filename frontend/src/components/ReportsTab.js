@@ -1,8 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-// import { Bar, Line, Doughnut } from 'react-chartjs-2'
-// import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, ArcElement, Title, Tooltip, Legend, PointElement } from 'chart.js'
 import Card from "./Card"
 import Button from "./Button"
 import { useNotification } from "../hooks/useNotification"
@@ -10,14 +8,12 @@ import NotificationModal from "./NotificationModal"
 import { useAuth } from "../context/AuthContext"
 import LoadingModal from "./LoadingModal"
 
-// ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, ArcElement, PointElement, Title, Tooltip, Legend)
-
 const ReportsTab = ({ groupId }) => {
   const [summary, setSummary] = useState(null)
   const { notification, hideNotification, showSuccess, showError } = useNotification()
   const { token } = useAuth()
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL
-  const [loadingSummary , setLoadingSummary] = useState(true)
+  const [loadingSummary, setLoadingSummary] = useState(true)
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -33,12 +29,13 @@ const ReportsTab = ({ groupId }) => {
           },
           credentials: "include",
         })
+
         const data = await res.json()
 
         const formattedCategoryBreakdown = (data.categoryBreakdown || []).map(item => ({
           ...item,
           month: item.month.trim(),
-          total: parseFloat(item.total)
+          total: parseFloat(item.total),
         }))
 
         setSummary({
@@ -51,13 +48,13 @@ const ReportsTab = ({ groupId }) => {
           contributionData: data.topContributors,
           monthlyBreakdown: data.last3Months.map(item => ({
             month: `${item.month} ${item.year}`,
-            amount: item.total
+            amount: item.total,
           })),
-          categoryBreakdown: formattedCategoryBreakdown
+          categoryBreakdown: formattedCategoryBreakdown,
         })
       } catch (err) {
         console.error("Failed to fetch report summary:", err)
-      }finally{
+      } finally {
         setLoadingSummary(false)
       }
     }
@@ -71,7 +68,7 @@ const ReportsTab = ({ groupId }) => {
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
-    }).format(amount)
+    }).format(amount ?? 0)
   }
 
   const handleExportCSV = async () => {
@@ -80,7 +77,7 @@ const ReportsTab = ({ groupId }) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
 
       if (!response.ok) throw new Error("CSV export failed")
 
@@ -107,7 +104,7 @@ const ReportsTab = ({ groupId }) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
 
       if (!response.ok) throw new Error("PDF export failed")
 
@@ -128,27 +125,8 @@ const ReportsTab = ({ groupId }) => {
     }
   }
 
-  const months = [...new Set(summary.categoryBreakdown.map(item => item.month))];
-  const categories = [...new Set(summary.categoryBreakdown.map(item => item.category))];
-
-  const categoryData = {
-    labels: months,
-    datasets: categories.map(category => ({
-      label: category,
-      data: months.map(month => {
-        const entry = summary.categoryBreakdown.find(i => i.month === month && i.category === category);
-        return entry ? entry.total : 0;
-      }),
-      backgroundColor: `#${Math.floor(Math.random()*16777215).toString(16)}`,
-    })),
-  };
-
-  if (loadingSummary) {
-    return <LoadingModal
-        isOpen={true}
-        message="Fetching Summary"
-        type="pulse"
-      />
+  if (loadingSummary || !summary) {
+    return <LoadingModal isOpen={true} message="Fetching Summary" type="pulse" />
   }
 
   return (
@@ -157,45 +135,44 @@ const ReportsTab = ({ groupId }) => {
         <h3>Reports & Analytics</h3>
         <div className="export-buttons">
           <Button variant="secondary" onClick={handleExportCSV}>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="mr-2"
-    viewBox="0 0 24 24"
-  >
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-    <polyline points="7 10 12 15 17 10" />
-    <line x1="12" y1="15" x2="12" y2="3" />
-  </svg>
-  Download CSV
-</Button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mr-2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Download CSV
+          </Button>
 
-<Button variant="secondary" onClick={handleExportPDF}>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="mr-2"
-    viewBox="0 0 24 24"
-  >
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-    <polyline points="7 10 12 15 17 10" />
-    <line x1="12" y1="15" x2="12" y2="3" />
-  </svg>
-  Download PDF
-</Button>
-
+          <Button variant="secondary" onClick={handleExportPDF}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mr-2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Download PDF
+          </Button>
         </div>
       </div>
 
@@ -231,7 +208,7 @@ const ReportsTab = ({ groupId }) => {
             </div>
             <div className="insight-item">
               <span className="insight-label">Average per person:</span>
-              <span className="insight-value">{formatCurrency((summary.avgPerPerson ?? 0))}</span>
+              <span className="insight-value">{formatCurrency(summary.avgPerPerson)}</span>
             </div>
           </div>
         </Card>
@@ -248,40 +225,6 @@ const ReportsTab = ({ groupId }) => {
           </div>
         </Card>
       </div>
-
-      {/* <Card className="chart-placeholder">
-        <Bar data={{
-          labels: summary.monthlyBreakdown.map(item => item.month),
-          datasets: [{
-            label: "Total Spent (₹)",
-            data: summary.monthlyBreakdown.map(item => item.amount),
-            backgroundColor: "#6366f1",
-            borderRadius: 6
-          }]
-        }} options={{
-          responsive: true,
-          plugins: {
-            legend: { position: "top" },
-            title: { display: true, text: "Monthly Expense Trends" },
-          },
-          scales: { y: { beginAtZero: true, ticks: { stepSize: 100 } } },
-        }} />
-      </Card>
-
-      <Card className="chart-placeholder">
-        <Doughnut data={{
-          labels: summary.contributionData.map(d => d.name),
-          datasets: [{
-            data: summary.contributionData.map(d => d.total_paid),
-            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"]
-          }]
-        }} options={{
-          plugins: {
-            legend: { position: "top" },
-            title: { display: true, text: "This Month's Contributions" }
-          }
-        }} />
-      </Card> */}
 
       <NotificationModal
         isOpen={notification.isOpen}
