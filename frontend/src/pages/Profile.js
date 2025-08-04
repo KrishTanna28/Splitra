@@ -197,7 +197,7 @@ const Profile = () => {
                                             display: "block",
                                         }}
                                     />
-                                ) : user.profile_picture ? (
+                                ) : user.profile_picture && !removePicture ? (
                                     <img
                                         src={user.profile_picture}
                                         alt="Profile"
@@ -209,8 +209,6 @@ const Profile = () => {
                                             display: "block",
                                         }}
                                     />
-                                ) : removePicture ? (
-                                    <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>
                                 ) : (
                                     <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>
                                 )}
