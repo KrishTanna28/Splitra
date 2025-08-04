@@ -64,7 +64,7 @@ exports.exportExpensesPDF = async (req, res, next) => {
     const dateOptions = {
       timeZone: "Asia/Kolkata",
       year: "numeric",
-      month: "short",
+      month: "numeric",
       day: "numeric",
     };
 
