@@ -209,6 +209,8 @@ const Profile = () => {
                                             display: "block",
                                         }}
                                     />
+                                ) : removePicture ? (
+                                    <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>
                                 ) : (
                                     <div className="profile-placeholder-simple">{getInitials(formData.name)}</div>
                                 )}
