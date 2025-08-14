@@ -117,7 +117,7 @@ const RecurringContributions = () => {
                     showSuccess(data.message || "Recurring contribution addedd successfully")
                 }, 1500)
             }
-
+            console.log("Sending recurring contribution data:", contributionData);
             await fetchActiveRecurrinContributions()
 
         } catch (error) {
