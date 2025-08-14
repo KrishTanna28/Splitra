@@ -12,7 +12,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
     frequency: "monthly",
     groupId: "",
     category: "Other",
-    participants: [],
     start_date: "",
   })
   const [errors, setErrors] = useState({})
@@ -37,7 +36,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         frequency: editData.frequency || "monthly",
         groupId: editData.groupId?.toString() || "",
         category: editData.category || "Other",
-        participants: editData.participants || [],
         start_date: editData.start_date ? formatToInputDate(editData.start_date) : "",
       })
     } else {
@@ -47,7 +45,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         frequency: "monthly",
         groupId: "",
         category: "Other",
-        participants: [],
         start_date: "",
       })
     }
@@ -112,7 +109,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         amount: Number.parseFloat(formData.amount),
         groupId: Number.parseInt(formData.groupId),
         groupName: selectedGroup?.name || "",
-        participants: selectedGroup?.members || [],
         id: editData?.id,
       }
 
@@ -125,7 +121,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
           frequency: "monthly",
           groupId: "",
           category: "Other",
-          participants: [],
           start_date: "",
         })
       }
@@ -157,7 +152,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
       frequency: "monthly",
       groupId: "",
       category: "Other",
-      participants: [],
       start_date: "",
     })
     setErrors({})
