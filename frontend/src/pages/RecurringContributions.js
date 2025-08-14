@@ -70,7 +70,7 @@ const RecurringContributions = () => {
                 const normalized = (data.contributions || []).map((c) => ({
                     id: c.id,
                     description: c.description,
-                    startDate: c.start_date,
+                    start_date: c.start_date,
                     isActive: c.active,
                     amount: parseFloat(c.amount),
                     category: c.category,
