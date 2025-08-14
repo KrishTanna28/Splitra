@@ -13,7 +13,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
     groupId: "",
     category: "Other",
     participants: [],
-    startDate: "",
+    start_date: "",
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -37,7 +37,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         groupId: editData.groupId.toString(),
         category: editData.category,
         participants: editData.participants,
-        startDate: editData.startDate ? formatToInputDate(editData.startDate) : "",
+        start_date: editData.start_date ? formatToInputDate(editData.start_date) : "",
       })
     } else {
       // Set default next date to tomorrow
@@ -50,7 +50,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         groupId: "",
         category: "Other",
         participants: [],
-        startDate: "",
+        start_date: "",
       })
     }
   }, [editData, isOpen])
@@ -95,8 +95,8 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
       newErrors.groupId = "Please select a group"
     }
 
-    if (!formData.startDate) {
-      newErrors.startDate = "Start date is required"
+    if (!formData.start_date) {
+      newErrors.start_date = "Start date is required"
     }
 
     return newErrors
@@ -136,7 +136,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
           groupId: "",
           category: "Other",
           participants: [],
-          startDate: editData.startDate ? formatDateOnly(editData.startDate) : "",
+          start_date: editData.start_date ? formatDateOnly(editData.start_date) : "",
         })
       }
       setErrors({})
@@ -251,8 +251,8 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
             <label className="input-label">Start Date *</label>
             <input
               type="date"
-              name="startDate"
-              value={formData.startDate}
+              name="start_date"
+              value={formData.start_date}
               onChange={handleChange}
               className="input"
               required
