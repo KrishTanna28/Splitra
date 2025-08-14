@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -70,7 +71,7 @@ const RecurringContributions = () => {
                 const normalized = (data.contributions || []).map((c) => ({
                     id: c.id,
                     description: c.description,
-                    start_date: c.start_date,
+                    startDate: c.startDate,
                     isActive: c.active,
                     amount: parseFloat(c.amount),
                     category: c.category,
