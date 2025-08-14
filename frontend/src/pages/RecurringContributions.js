@@ -87,7 +87,7 @@ const RecurringContributions = () => {
             }
         } catch (error) {
             setErrors({ general: "Unable to fetch active contributions" });
-        }finally{
+        } finally {
             setLoadingRecurringContributions(false)
         }
     };
@@ -119,7 +119,7 @@ const RecurringContributions = () => {
                     showSuccess(data.message || "Recurring contribution addedd successfully")
                 }, 1500)
             }
-        
+
             await fetchActiveRecurrinContributions()
 
         } catch (error) {
@@ -128,7 +128,6 @@ const RecurringContributions = () => {
     }
 
     const handleEditContribution = async (editingContribution) => {
-        console.log(editingContribution.id);
         setEditRecurring(true)
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/update-recurring/${editingContribution.id}`, {
@@ -226,10 +225,10 @@ const RecurringContributions = () => {
                         setRecurringContributions(prev =>
                             prev.filter((contribution) => contribution.id !== id)
                         );
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             setDeleteRecurring(false)
                             showSuccess("Recurring contribution deleted successfully!", "Success");
-                        },1500)
+                        }, 1500)
                     } else {
                         setErrors(data.message || "Unable to delete contribution");
                     }
@@ -318,12 +317,12 @@ const RecurringContributions = () => {
     }, 0);
 
     if (loadingRecurringContributions) {
-    return <LoadingModal
-        isOpen={true}
-        message="Fetching Recurring contributions"
-        type="pulse"
-      />
-  }
+        return <LoadingModal
+            isOpen={true}
+            message="Fetching Recurring contributions"
+            type="pulse"
+        />
+    }
 
     return (
         <div className="recurring-contributions">
@@ -417,7 +416,8 @@ const RecurringContributions = () => {
                                         variant="secondary"
                                         size="small"
                                         onClick={() => {
-                                            setEditingContribution(contribution)
+                                            const original = recurringContributions.find(c => c.id === contribution.id);
+                                            setEditingContribution(original);
                                             setShowAddModal(true)
                                         }}
                                     >
