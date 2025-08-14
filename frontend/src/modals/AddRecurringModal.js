@@ -12,7 +12,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
     frequency: "monthly",
     groupId: "",
     category: "Other",
-    start_date: "",
+    startDate: "",
   })
   const [errors, setErrors] = useState({})
   const [generalError, setGeneralError] = useState("")
@@ -36,7 +36,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         frequency: editData.frequency || "monthly",
         groupId: editData.groupId?.toString() || "",
         category: editData.category || "Other",
-        start_date: editData.start_date ? formatToInputDate(editData.start_date) : "",
+        startDate: editData.startDate ? formatToInputDate(editData.startDate) : "",
       })
     } else {
       setFormData({
@@ -45,7 +45,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         frequency: "monthly",
         groupId: "",
         category: "Other",
-        start_date: "",
+        startDate: "",
       })
     }
     setErrors({})
@@ -82,8 +82,8 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
       newErrors.groupId = "Please select a group"
     }
 
-    if (!formData.start_date) {
-      newErrors.start_date = "Start date is required"
+    if (!formData.startDate) {
+      newErrors.startDate = "Start date is required"
     }
 
     return newErrors
@@ -120,7 +120,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
           frequency: "monthly",
           groupId: "",
           category: "Other",
-          start_date: "",
+          startDate: "",
         })
       }
       setErrors({})
@@ -151,7 +151,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
       frequency: "monthly",
       groupId: "",
       category: "Other",
-      start_date: "",
+      startDate: "",
     })
     setErrors({})
     setGeneralError("")
@@ -240,13 +240,13 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
             <label className="input-label">Start Date *</label>
             <input
               type="date"
-              name="start_date"
-              value={formData.start_date}
+              name="startDate"
+              value={formData.startDate}
               onChange={handleChange}
-              className={`input ${errors.start_date ? "input-error" : ""}`}
+              className={`input ${errors.startDate ? "input-error" : ""}`}
               required
             />
-            {errors.start_date && <span className="error-message">{errors.start_date}</span>}
+            {errors.startDate && <span className="error-message">{errors.startDate}</span>}
           </div>
         </div>
 
