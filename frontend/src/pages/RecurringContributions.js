@@ -92,6 +92,7 @@ const RecurringContributions = () => {
     };
 
     const handleAddContribution = async (contributionData) => {
+        console.log("Sending recurring contribution data:", contributionData);
         setAddingRecurring(true)
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/recurring`, {
@@ -117,7 +118,7 @@ const RecurringContributions = () => {
                     showSuccess(data.message || "Recurring contribution addedd successfully")
                 }, 1500)
             }
-            console.log("Sending recurring contribution data:", contributionData);
+        
             await fetchActiveRecurrinContributions()
 
         } catch (error) {
