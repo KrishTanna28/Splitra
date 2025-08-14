@@ -127,10 +127,10 @@ const RecurringContributions = () => {
         }
     }
 
-    const handleEditContribution = async (editData) => {
+    const handleEditContribution = async (editingContribution) => {
         setEditRecurring(true)
         try {
-            const response = await fetch(`${REACT_APP_API_URL}/settlements/update-recurring/${editData.id}`, {
+            const response = await fetch(`${REACT_APP_API_URL}/settlements/update-recurring/${editingContribution.id}`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${token}`,
