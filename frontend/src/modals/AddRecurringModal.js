@@ -16,10 +16,11 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
     start_date: "",
   })
   const [errors, setErrors] = useState({})
+  const [generalError, setGeneralError] = useState("")
   const [loading, setLoading] = useState(false)
 
   const frequencies = [
-    { value : "daily", label : "Daily"},
+    { value: "daily", label: "Daily" },
     { value: "weekly", label: "Weekly" },
     { value: "monthly", label: "Monthly" },
     { value: "quarterly", label: "Quarterly" },
@@ -31,18 +32,15 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
   useEffect(() => {
     if (editData) {
       setFormData({
-        description: editData.description,
-        amount: editData.amount.toString(),
-        frequency: editData.frequency,
-        groupId: editData.groupId.toString(),
-        category: editData.category,
-        participants: editData.participants,
+        description: editData.description || "",
+        amount: editData.amount?.toString() || "",
+        frequency: editData.frequency || "monthly",
+        groupId: editData.groupId?.toString() || "",
+        category: editData.category || "Other",
+        participants: editData.participants || [],
         start_date: editData.start_date ? formatToInputDate(editData.start_date) : "",
       })
     } else {
-      // Set default next date to tomorrow
-      const tomorrow = new Date()
-      tomorrow.setDate(tomorrow.getDate() + 1)
       setFormData({
         description: "",
         amount: "",
@@ -53,6 +51,8 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         start_date: "",
       })
     }
+    setErrors({})
+    setGeneralError("")
   }, [editData, isOpen])
 
   const handleChange = (e) => {
@@ -61,16 +61,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
       ...formData,
       [name]: value,
     })
-
-    // // Update participants when group changes
-    // if (name === "groupId") {
-    //   const selectedGroup = groups.find((g) => g.id === Number.parseInt(value))
-    //   setFormData((prev) => ({
-    //     ...prev,
-    //     [name]: value,
-    //     participants: selectedGroup ? selectedGroup.members : [],
-    //   }))
-    // }
 
     if (errors[name]) {
       setErrors({
@@ -112,6 +102,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
     }
 
     setLoading(true)
+    setGeneralError("")
     try {
       await new Promise((resolve) => setTimeout(resolve, 500))
 
@@ -122,10 +113,10 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         groupId: Number.parseInt(formData.groupId),
         groupName: selectedGroup?.name || "",
         participants: selectedGroup?.members || [],
-        id : editData.id
+        id: editData?.id,
       }
 
-      onSubmit(contributionData)
+      await onSubmit(contributionData)
 
       if (!editData) {
         setFormData({
@@ -135,21 +126,29 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
           groupId: "",
           category: "Other",
           participants: [],
-          start_date: editData.start_date ? formatDateOnly(editData.start_date) : "",
+          start_date: "",
         })
       }
       setErrors({})
     } catch (error) {
-      setErrors({ general: "Failed to save recurring contribution" })
+      setGeneralError("Failed to save recurring contribution")
     } finally {
       setLoading(false)
     }
   }
 
   function formatDateOnly(isoString) {
-  const date = new Date(isoString);
-  return date.toISOString().split("T")[0]; // Always "yyyy-MM-dd"
-}
+    const date = new Date(isoString)
+    return date.toISOString().split("T")[0]
+  }
+
+  function formatToInputDate(dateString) {
+    const date = new Date(dateString)
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, "0")
+    const day = String(date.getDate()).padStart(2, "0")
+    return `${year}-${month}-${day}`
+  }
 
   const handleClose = () => {
     setFormData({
@@ -159,11 +158,12 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
       groupId: "",
       category: "Other",
       participants: [],
+      start_date: "",
     })
     setErrors({})
+    setGeneralError("")
     onClose()
   }
-
 
   const handleFrequencyChange = (e) => {
     const frequency = e.target.value
@@ -173,15 +173,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
     })
   }
 
-  function formatToInputDate(dateString) {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-
   return (
     <Modal
       isOpen={isOpen}
@@ -190,7 +181,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
       size="large"
     >
       <form onSubmit={handleSubmit}>
-        {errors.general && <div className="error-banner">{errors.general}</div>}
+        {generalError && <div className="error-banner">{generalError}</div>}
 
         <div className="form-row">
           <Input
@@ -199,6 +190,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
             value={formData.description}
             onChange={handleChange}
             placeholder="Optional description"
+            error={errors.description}
             required
           />
         </div>
@@ -218,7 +210,13 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
 
           <div className="input-group">
             <label className="input-label">Category *</label>
-            <select name="category" value={formData.category} onChange={handleChange} className="input" required>
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="input"
+              required
+            >
               {categories.map((category) => (
                 <option key={category} value={category}>
                   {category}
@@ -252,9 +250,10 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
               name="start_date"
               value={formData.start_date}
               onChange={handleChange}
-              className="input"
+              className={`input ${errors.start_date ? "input-error" : ""}`}
               required
             />
+            {errors.start_date && <span className="error-message">{errors.start_date}</span>}
           </div>
         </div>
 
@@ -269,30 +268,18 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
               required
             >
               <option value="">Select a group</option>
-              {Array.isArray(groups) && groups.map((group) => (
-                <option key={group.id} value={group.id}>
-                  {group.name}
-                </option>
-              ))}
+              {Array.isArray(groups) &&
+                groups.map((group) => (
+                  <option key={group.id} value={group.id}>
+                    {group.name}
+                  </option>
+                ))}
             </select>
             {errors.groupId && <span className="error-message">{errors.groupId}</span>}
           </div>
         </div>
 
-        {/* {formData.participants.length > 0 && (
-          <div className="participants-preview">
-            <h4>Participants ({formData.participants.length})</h4>
-            <div className="participants-list">
-              {formData.participants.map((participant, index) => (
-                <span key={index} className="participant-tag">
-                  {participant}
-                </span>
-              ))}
-            </div>
-          </div>
-        )} */}
-
-        {Object.keys(errors).length > 0 && (
+        {Object.keys(errors).some((key) => key !== "general") && (
           <div className="error-banner">Please fix the highlighted fields.</div>
         )}
 
