@@ -136,7 +136,7 @@ const RecurringContributions = () => {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(editData),
+                body: JSON.stringify(editingContribution),
                 credentials: "include"
             })
 
