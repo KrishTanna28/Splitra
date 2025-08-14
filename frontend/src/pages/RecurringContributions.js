@@ -128,7 +128,7 @@ const RecurringContributions = () => {
     }
 
     const handleEditContribution = async (editingContribution) => {
-        console.log(editingContribution);
+        console.log(editingContribution.id);
         setEditRecurring(true)
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/update-recurring/${editingContribution.id}`, {
