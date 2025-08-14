@@ -129,7 +129,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
 
       if (!editData) {
         setFormData({
-          title: "",
           description: "",
           amount: "",
           frequency: "monthly",
@@ -154,7 +153,6 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
 
   const handleClose = () => {
     setFormData({
-      title: "",
       description: "",
       amount: "",
       frequency: "monthly",
