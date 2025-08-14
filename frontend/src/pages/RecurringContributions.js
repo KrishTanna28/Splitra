@@ -53,10 +53,10 @@ const RecurringContributions = () => {
     }, [token]);
 
     useEffect(() => {
-        fetchActiveRecurrinContributions()
+        fetchRecurringContributions()
     }, [recurringContributions.length])
 
-    const fetchActiveRecurrinContributions = async () => {
+    const fetchRecurringContributions = async () => {
         setLoadingRecurringContributions(true)
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/my-recurring`, {
@@ -87,7 +87,7 @@ const RecurringContributions = () => {
             }
         } catch (error) {
             setErrors({ general: "Unable to fetch active contributions" });
-        } finally {
+        }finally{
             setLoadingRecurringContributions(false)
         }
     };
@@ -119,15 +119,15 @@ const RecurringContributions = () => {
                     showSuccess(data.message || "Recurring contribution addedd successfully")
                 }, 1500)
             }
-
-            await fetchActiveRecurrinContributions()
+        
+            await fetchRecurringContributions()
 
         } catch (error) {
             setErrors("Unable to send add recurring contribution")
         }
     }
 
-    const handleEditContribution = async (editingContribution) => {
+    const handleEditContribution = async (editData) => {
         setEditRecurring(true)
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/update-recurring/${editingContribution.id}`, {
@@ -136,7 +136,7 @@ const RecurringContributions = () => {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(editingContribution),
+                body: JSON.stringify(editData),
                 credentials: "include"
             })
 
@@ -154,7 +154,7 @@ const RecurringContributions = () => {
                 }, 1500)
             }
 
-            await fetchActiveRecurrinContributions()
+            await fetchRecurringContributions()
 
         } catch (error) {
             setErrors("Unable to send add recurring contribution")
@@ -225,10 +225,10 @@ const RecurringContributions = () => {
                         setRecurringContributions(prev =>
                             prev.filter((contribution) => contribution.id !== id)
                         );
-                        setTimeout(() => {
+                        setTimeout(()=>{
                             setDeleteRecurring(false)
                             showSuccess("Recurring contribution deleted successfully!", "Success");
-                        }, 1500)
+                        },1500)
                     } else {
                         setErrors(data.message || "Unable to delete contribution");
                     }
@@ -317,12 +317,12 @@ const RecurringContributions = () => {
     }, 0);
 
     if (loadingRecurringContributions) {
-        return <LoadingModal
-            isOpen={true}
-            message="Fetching Recurring contributions"
-            type="pulse"
-        />
-    }
+    return <LoadingModal
+        isOpen={true}
+        message="Fetching Recurring contributions"
+        type="pulse"
+      />
+  }
 
     return (
         <div className="recurring-contributions">
@@ -416,8 +416,7 @@ const RecurringContributions = () => {
                                         variant="secondary"
                                         size="small"
                                         onClick={() => {
-                                            const original = recurringContributions.find(c => c.id === contribution.id);
-                                            setEditingContribution(original);
+                                            setEditingContribution(contribution)
                                             setShowAddModal(true)
                                         }}
                                     >
