@@ -108,8 +108,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         ...formData,
         amount: Number.parseFloat(formData.amount),
         groupId: Number.parseInt(formData.groupId),
-        groupName: selectedGroup?.name || "",
-        id: editData?.id,
+        groupName: selectedGroup?.name || ""
       }
 
       await onSubmit(contributionData)
