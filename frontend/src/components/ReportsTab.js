@@ -179,24 +179,24 @@ const ReportsTab = ({ groupId }) => {
       <div className="reports-grid">
         <Card className="insights-card">
           <h4>Expense Summary</h4>
-          <div className="summary-stats">
-            <div className="stat-item">
-              <span className="stat-label">Total Expenses</span>
-              <span className="stat-value">{formatCurrency(summary.totalGroupExpenses)}</span>
+          <div className="insights-list">
+            <div className="insight-item">
+              <span className="insight-label">Total Expenses</span>
+              <span className="insight-value">{formatCurrency(summary.totalGroupExpenses)}</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-label">Total Settlements</span>
-              <span className="stat-value">{formatCurrency(summary.totalSettlements)}</span>
+            <div className="insight-item">
+              <span className="insight-label">Total Settlements</span>
+              <span className="insight-value">{formatCurrency(summary.totalSettlements)}</span>
             </div>
-            <div className="stat-item">
-              <span className="stat-label">Your Contribution</span>
-              <span className="stat-value">{formatCurrency(summary.yourContribution)}</span>
+            <div className="insight-item">
+              <span className="insight-label">Your Contribution</span>
+              <span className="insight-value">{formatCurrency(summary.yourContribution)}</span>
             </div>
           </div>
         </Card>
 
         <Card className="insights-card">
-          <h4>Insights</h4>
+          <h4>Monthly Insights</h4>
           <div className="insights-list">
             <div className="insight-item">
               <span className="insight-label">Top Spender:</span>
