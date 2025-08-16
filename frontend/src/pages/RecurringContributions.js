@@ -337,6 +337,7 @@ const RecurringContributions = () => {
           </button>
           <div></div>
           <div></div>
+    </div>
         </div>
 
             <div className="recurring-content">
