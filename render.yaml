@@ -1,0 +1,12 @@
+# Exported from Render on 2025-09-03T12:38:00Z
+databases:
+- name: SplitraDB
+  databaseName: splitradb
+  user: splitradb_user
+  plan: free
+  region: oregon
+  ipAllowList:
+  - source: 0.0.0.0/0
+    description: everywhere
+  postgresMajorVersion: "17"
+version: "1"
