@@ -322,6 +322,10 @@ const RecurringContributions = () => {
       />
   }
 
+    if (!token) {
+  navigate("/login"); // or show an error
+  return;
+}
     return (
         <div className="recurring-contributions">
             <Navbar title="Recurring Contributions" />
