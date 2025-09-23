@@ -30,28 +30,29 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const fetchUserDetails = async () => {
-        try {
-            const response = await fetch(`${REACT_APP_API_URL}/auth/user-details`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+    if (!token) return;  // <-- Add this guard to avoid calling API without token
 
-            const data = await response.json();
-
-            if (response.ok) {
-                // Normalize path once
-                const userWithCleanPath = {
-                    ...data.user,
-                    profilePicture: data.user.profile_picture?.replace(/\\/g, "/"),
-                };
-
-                setUser(userWithCleanPath);
-            }
-        } catch (error) {
-            setErrors("Unable to fetch user details")
+    try {
+      const response = await fetch(`${REACT_APP_API_URL}/auth/user-details`, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
+      })
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const userWithCleanPath = {
+          ...data.user,
+          profilePicture: data.user.profile_picture?.replace(/\\/g, "/"),
+        };
+
+        setUser(userWithCleanPath);
+      }
+    } catch (error) {
+      setErrors("Unable to fetch user details")
     }
+  }
 
     useEffect(()=>{
       fetchUserDetails()
