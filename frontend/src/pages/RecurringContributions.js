@@ -93,6 +93,7 @@ const RecurringContributions = () => {
 
     const handleAddContribution = async (contributionData) => {
         setAddingRecurring(true)
+        setErrors({})  // Clear previous errors
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/recurring`, {
                 method: "POST",
@@ -109,19 +110,24 @@ const RecurringContributions = () => {
             if (!response.ok) {
                 setAddingRecurring(false)
                 setShowAddModal(false)
-                showError(data.message)
+                if (data.errors) {
+                    // Assuming backend sends validation errors in data.errors
+                    setErrors(data.errors)
+                } else {
+                    showError(data.message || "Failed to save recurring contribution")
+                }
             } else {
                 setTimeout(() => {
                     setAddingRecurring(false)
                     setShowAddModal(false)
-                    showSuccess(data.message || "Recurring contribution addedd successfully")
+                    showSuccess(data.message || "Recurring contribution added successfully")
                 }, 1500)
             }
 
             await fetchActiveRecurrinContributions()
 
         } catch (error) {
-            setErrors("Unable to send add recurring contribution")
+            setErrors({ general: "Unable to send add recurring contribution" })
         }
     }
 
@@ -322,10 +328,6 @@ const RecurringContributions = () => {
       />
   }
 
-    if (!token) {
-  navigate("/login"); // or show an error
-  return;
-}
     return (
         <div className="recurring-contributions">
             <Navbar title="Recurring Contributions" />
