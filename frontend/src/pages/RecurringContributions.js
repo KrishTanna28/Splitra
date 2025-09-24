@@ -52,10 +52,10 @@ const RecurringContributions = () => {
     }, [token]);
 
     useEffect(() => {
-        fetchActiveRecurrinContributions()
+        fetchActiveRecurringContributions()
     }, [recurringContributions.length])
 
-    const fetchActiveRecurrinContributions = async () => {
+    const fetchActiveRecurringContributions = async () => {
         setLoadingRecurringContributions(true)
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/my-recurring`, {
@@ -93,7 +93,6 @@ const RecurringContributions = () => {
 
     const handleAddContribution = async (contributionData) => {
         setAddingRecurring(true)
-        setErrors({})  // Clear previous errors
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/recurring`, {
                 method: "POST",
@@ -110,24 +109,19 @@ const RecurringContributions = () => {
             if (!response.ok) {
                 setAddingRecurring(false)
                 setShowAddModal(false)
-                if (data.errors) {
-                    // Assuming backend sends validation errors in data.errors
-                    setErrors(data.errors)
-                } else {
-                    showError(data.message || "Failed to save recurring contribution")
-                }
+                showError(data.message)
             } else {
                 setTimeout(() => {
                     setAddingRecurring(false)
                     setShowAddModal(false)
-                    showSuccess(data.message || "Recurring contribution added successfully")
+                    showSuccess(data.message || "Recurring contribution addedd successfully")
                 }, 1500)
             }
 
-            await fetchActiveRecurrinContributions()
+            await fetchActiveRecurringContributions()
 
         } catch (error) {
-            setErrors({ general: "Unable to send add recurring contribution" })
+            setErrors("Unable to send add recurring contribution")
         }
     }
 
@@ -158,7 +152,7 @@ const RecurringContributions = () => {
                 }, 1500)
             }
 
-            await fetchActiveRecurrinContributions()
+            await fetchActiveRecurringContributions()
 
         } catch (error) {
             setErrors("Unable to send add recurring contribution")
