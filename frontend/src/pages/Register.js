@@ -104,7 +104,7 @@ const Register = () => {
       })
     } catch (error) {
       console.error(error)
-      setErrors({ general: "Registration failed. Please try again." })
+      setErrors({ general: error.message })
     } finally {
       setLoading(false)
     }
