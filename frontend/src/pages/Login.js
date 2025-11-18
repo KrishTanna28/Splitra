@@ -68,7 +68,7 @@ const Login = () => {
 
     } catch (error) {
       console.error("Login error:", error);
-      setErrors({ general: "Login failed. Please try again." })
+      setErrors({ general: error.messagea || "An error occurred during login." })
     } finally {
       setLoading(false)
     }
