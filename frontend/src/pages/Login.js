@@ -8,7 +8,7 @@ import "../styles/auth.css"
 import LoadingModal from "../components/LoadingModal"
 import { Eye, EyeOff } from "lucide-react" 
 
-const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -68,7 +68,7 @@ const Login = () => {
 
     } catch (error) {
       console.error("Login error:", error);
-      setErrors({ general: error.messagea || "An error occurred during login." })
+      setErrors({ general: error.message || "An error occurred during login." })
     } finally {
       setLoading(false)
     }

@@ -14,10 +14,21 @@ const cors = require('cors');
 dotenv.config();
 
 const app = express();
+// Configure CORS to allow the deployed frontend and localhost in development.
+const CLIENT_URL = process.env.CLIENT_URL || 'https://splitra.vercel.app';
+const DEV_URL = 'http://localhost:3000';
+const allowedOrigins = [CLIENT_URL];
+if (process.env.NODE_ENV !== 'production') allowedOrigins.push(DEV_URL);
+
 app.use(cors({
-    origin: 'https://splitra.vercel.app', // allow requests from React frontend
-    credentials: true // allow cookies & headers like Authorization
-  }));
+  origin: function(origin, callback) {
+    // allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+    return callback(new Error('CORS policy: Origin not allowed'));
+  },
+  credentials: true // allow cookies & headers like Authorization
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));

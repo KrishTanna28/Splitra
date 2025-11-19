@@ -1,15 +1,12 @@
 const { Pool } = require('pg');
-require('dotenv').config();
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  ssl: {
-    rejectUnauthorized: false, // Needed for Render's managed DB
-  },
+  user: 'postgres',          // your local PG username
+  host: 'localhost',         // always localhost for local DB
+  database: 'splitpaydb',       // your local DB name
+  password: 'Krish1234', // your local PG password
+  port: 5433                 // default PG port
+  // no SSL for local
 });
 
 module.exports = pool;

@@ -48,10 +48,21 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt:', { email });
+
+    if (!email || !password) {
+      console.warn('Login missing email or password', { body: req.body });
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
 
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     const user = result.rows[0];
     if (!user) return res.status(404).json({ message: 'User not found' });
+
+    if (!user.password) {
+      console.error('User record missing password hash for', email);
+      return res.status(500).json({ message: 'Server error: user password not set' });
+    }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ message: 'Invalid credentials' });
@@ -85,6 +96,7 @@ Split Payment App Team
       requiresOTP: true 
     });
   } catch (err) {
+    console.error('Login error:', err && err.message ? err.message : err);
     next(err);
   }
 };

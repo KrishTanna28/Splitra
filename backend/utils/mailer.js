@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (to, subject, text) => {
   try {
     await transporter.sendMail({
-      from: "Expense Tracker",
+      from: "Splitra",
       to,
       subject,
       text

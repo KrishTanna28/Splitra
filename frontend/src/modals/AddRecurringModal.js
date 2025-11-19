@@ -73,10 +73,9 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
     // }
 
     if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: "",
-      })
+      const newErrors = { ...errors }
+      delete newErrors[name]
+      setErrors(newErrors)
     }
   }
 
@@ -122,21 +121,20 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
         groupId: Number.parseInt(formData.groupId),
         groupName: selectedGroup?.name || "",
         participants: selectedGroup?.members || [],
-        id : editData.id
+        id: editData?.id
       }
 
       onSubmit(contributionData)
 
       if (!editData) {
         setFormData({
-          title: "",
           description: "",
           amount: "",
           frequency: "monthly",
           groupId: "",
           category: "Other",
           participants: [],
-          startDate: editData.startDate ? formatDateOnly(editData.startDate) : "",
+          startDate: "",
         })
       }
       setErrors({})
@@ -154,13 +152,13 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
 
   const handleClose = () => {
     setFormData({
-      title: "",
       description: "",
       amount: "",
       frequency: "monthly",
       groupId: "",
       category: "Other",
       participants: [],
+      startDate: "",
     })
     setErrors({})
     onClose()
@@ -200,8 +198,9 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            placeholder="Optional description"
+            placeholder="Short description"
             required
+            error={errors.description}
           />
         </div>
 
@@ -254,9 +253,10 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
               name="startDate"
               value={formData.startDate}
               onChange={handleChange}
-              className="input"
+              className={`input ${errors.startDate ? "input-error" : ""}`}
               required
             />
+            {errors.startDate && <span className="error-message">{errors.startDate}</span>}
           </div>
         </div>
 
