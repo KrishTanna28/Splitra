@@ -13,18 +13,26 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [erros, setErrors] = useState({})
+  const [errors, setErrors] = useState({})
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
 
-    if (storedToken) setToken(storedToken);
-    if (storedUser) setUser(JSON.parse(storedUser));
+    // Guard against values that were accidentally saved as the string "undefined"
+    if (storedToken && storedToken !== "undefined") setToken(storedToken);
+    if (storedUser && storedUser !== "undefined") {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (err) {
+        console.warn('Failed to parse stored user from localStorage, clearing value', err)
+        localStorage.removeItem('user')
+      }
+    }
 
     setLoading(false);
   }, []);
