@@ -11,6 +11,7 @@ import SettlementsTab from "../components/SettlementsTab"
 import ReportsTab from "../components/ReportsTab"
 import "../styles/group-page.css"
 import Button from "../components/Button";
+import { Users, Banknote, Scale, CreditCard, BarChart2 } from "lucide-react"
 
 const GroupPage = () => {
   const { groupId } = useParams()
@@ -67,11 +68,11 @@ const GroupPage = () => {
   }
 
   const tabs = [
-    { id: "info", label: "Group Info", icon: "👥" },
-    { id: "expenses", label: "Expenses", icon: "💸" },
-    { id: "balances", label: "Balances", icon: "⚖️" },
-    { id: "settlements", label: "Settlements", icon: "💳" },
-    { id: "reports", label: "Reports", icon: "📊" },
+    { id: "info", label: "Group Info", icon: <Users size={16} /> },
+    { id: "expenses", label: "Expenses", icon: <Banknote size={16} /> },
+    { id: "balances", label: "Balances", icon: <Scale size={16} /> },
+    { id: "settlements", label: "Settlements", icon: <CreditCard size={16} /> },
+    { id: "reports", label: "Reports", icon: <BarChart2 size={16} /> },
   ]
 
   const renderTabContent = () => {

@@ -2,6 +2,7 @@
 
 import Modal from "./Modal"
 import Button from "./Button"
+import { CheckCircle, XCircle, AlertTriangle, Info } from "lucide-react"
 
 const NotificationModal = ({
   isOpen,
@@ -17,13 +18,13 @@ const NotificationModal = ({
   const getIcon = () => {
     switch (type) {
       case "success":
-        return "✅"
+        return <CheckCircle size={24} />
       case "error":
-        return "❌"
+        return <XCircle size={24} />
       case "warning":
-        return "⚠️"
+        return <AlertTriangle size={24} />
       default:
-        return "ℹ️"
+        return <Info size={24} />
     }
   }
 

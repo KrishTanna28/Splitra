@@ -7,6 +7,7 @@ import Button from "../components/Button"
 import Card from "../components/Card"
 import "../styles/landing-page.css"
 import { useAuth } from "../context/AuthContext"
+import { Users, Banknote, RefreshCw, Moon, Sun, Hotel, UtensilsCrossed, Car } from "lucide-react"
 
 const LandingPage = () => {
   const { theme, toggleTheme } = useTheme()
@@ -16,17 +17,17 @@ const LandingPage = () => {
 
   const features = [
     {
-      icon: "👥",
+      icon: <Users size={28} />,
       title: "Create Groups",
       description: "Organize expenses with friends, family, or colleagues in dedicated groups",
     },
     {
-      icon: "💸",
+      icon: <Banknote size={28} />,
       title: "Split & Manage Expenses",
       description: "Easily divide bills, track who owes what, and manage expenses in one place",
     },
     {
-      icon: "🔁",
+      icon: <RefreshCw size={28} />,
       title: "Recurring Expenses",
       description: "Automate regular payments like rent, subscriptions, or shared bills",
     },
@@ -56,7 +57,7 @@ const LandingPage = () => {
               How it Works
             </a>
             <button className="theme-toggle-nav" onClick={toggleTheme} aria-label="Toggle theme">
-              {theme === "light" ? "🌙" : "☀️"}
+              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
             </button>
             <Link to="/login" className="nav-cta">
               Sign In
@@ -115,17 +116,17 @@ const LandingPage = () => {
                   </div>
                   <div className="preview-expenses">
                     <div className="expense-item">
-                      <span className="expense-icon">🏨</span>
+                      <span className="expense-icon"><Hotel size={16} /></span>
                       <span className="expense-desc">Hotel booking</span>
                       <span className="expense-amt">₹8,000</span>
                     </div>
                     <div className="expense-item">
-                      <span className="expense-icon">🍽️</span>
+                      <span className="expense-icon"><UtensilsCrossed size={16} /></span>
                       <span className="expense-desc">Dinner</span>
                       <span className="expense-amt">₹3,200</span>
                     </div>
                     <div className="expense-item">
-                      <span className="expense-icon">🚗</span>
+                      <span className="expense-icon"><Car size={16} /></span>
                       <span className="expense-desc">Transport</span>
                       <span className="expense-amt">₹2,400</span>
                     </div>

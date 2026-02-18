@@ -12,6 +12,7 @@ import { useAuth } from "../context/AuthContext"
 import "../styles/recurring-contributions.css"
 import LoadingModal from "../components/LoadingModal"
 import { useApp } from "../context/AppContext"
+import { UtensilsCrossed, Car, Hotel, Clapperboard, ShoppingBag, FileText, BarChart2, DollarSign, Clock, ArrowLeft } from "lucide-react"
 
 const RecurringContributions = () => {
     const [loadingRecurringContributions, setLoadingRecurringContributions] = useState(true)
@@ -267,14 +268,14 @@ const RecurringContributions = () => {
 
     const getCategoryIcon = (category) => {
         const icons = {
-            Food: "🍽️",
-            Transport: "🚗",
-            Accommodation: "🏨",
-            Entertainment: "🎬",
-            Shopping: "🛍️",
-            Other: "📝",
+            Food: <UtensilsCrossed size={16} />,
+            Transport: <Car size={16} />,
+            Accommodation: <Hotel size={16} />,
+            Entertainment: <Clapperboard size={16} />,
+            Shopping: <ShoppingBag size={16} />,
+            Other: <FileText size={16} />,
         }
-        return icons[category] || "📝"
+        return icons[category] || <FileText size={16} />
     }
 
     const getDaysUntilNext = (dateString) => {
@@ -334,7 +335,7 @@ const RecurringContributions = () => {
                     </div>
                     <div className="header-actions">
                         <Button variant="secondary" onClick={() => navigate("/dashboard")}>
-                            ← Back to Dashboard
+                            <ArrowLeft size={16} style={{ marginRight: "4px", verticalAlign: "middle" }} /> Back to Dashboard
                         </Button>
                         {recurringContributions.length > 0 && <Button onClick={() => setShowAddModal(true)}>Add Recurring</Button>}
                     </div>
@@ -343,21 +344,21 @@ const RecurringContributions = () => {
                 {/* Summary Cards */}
                 <div className="summary-cards">
                     <Card className="summary-card">
-                        <div className="summary-icon">📊</div>
+                        <div className="summary-icon"><BarChart2 size={24} /></div>
                         <div className="summary-info">
                             <h3>{activeContributions.length}</h3>
                             <p>Active Contributions</p>
                         </div>
                     </Card>
                     <Card className="summary-card">
-                        <div className="summary-icon">💰</div>
+                        <div className="summary-icon"><DollarSign size={24} /></div>
                         <div className="summary-info">
                             <h3>{formatCurrency(monthlyTotal)}</h3>
                             <p>Monthly Total</p>
                         </div>
                     </Card>
                     <Card className="summary-card">
-                        <div className="summary-icon">⏰</div>
+                        <div className="summary-icon"><Clock size={24} /></div>
                         <div className="summary-info">
                             <h3>{activeContributions.filter((c) => getDaysUntilNext(c.nextDate) <= 7).length}</h3>
                             <p>Due This Week</p>

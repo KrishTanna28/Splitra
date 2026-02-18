@@ -11,6 +11,7 @@ import { useNotification } from "../hooks/useNotification"
 import NotificationModal from "../components/NotificationModal"
 import LoadingModal from "../components/LoadingModal"
 import "../styles/profile.css"
+import { CreditCard } from "lucide-react"
 
 const Profile = () => {
     const { token, login, user } = useAuth()
@@ -277,7 +278,7 @@ const Profile = () => {
                                     {!hasUpiId && !isEditing && (
                                         <div className="upi-missing-notice">
                                             <p className="notice-text">
-                                                <span className="notice-icon">💳</span>
+                                                <span className="notice-icon"><CreditCard size={16} /></span>
                                                 Add your UPI ID to receive payments easily
                                             </p>
                                         </div>

@@ -6,6 +6,7 @@ import Button from "../components/Button"
 import { useAuth } from "../context/AuthContext"
 import NotificationModal from "../components/NotificationModal"
 import { useNotification } from "../hooks/useNotification"
+import { Trash2 } from "lucide-react"
 
 const ExpenseCommentsModal = ({ isOpen, onClose, expense, commentCounts }) => {
   const [comments, setComments] = useState([])
@@ -134,7 +135,7 @@ const ExpenseCommentsModal = ({ isOpen, onClose, expense, commentCounts }) => {
           onClick={() => deleteComment(comment.id)}
           title="Delete Comment"
         >
-          🗑️
+          <Trash2 size={14} />
         </button>}
               </div>
               <div className="comment-text">{comment.comment}</div>

@@ -9,6 +9,7 @@ import { useNotification } from "../hooks/useNotification"
 import NotificationModal from "./NotificationModal"
 import { useAuth } from "../context/AuthContext";
 import LoadingModal from "../components/LoadingModal"
+import { UtensilsCrossed, Car, Hotel, Clapperboard, ShoppingBag, FileText, MessageCircle } from "lucide-react"
 
 const ExpensesTab = ({ groupId, members }) => {
   const [loadingExpenses, setLoadingExpenses] = useState(true)
@@ -271,14 +272,14 @@ const ExpensesTab = ({ groupId, members }) => {
 
   const getCategoryIcon = (category) => {
     const icons = {
-      Food: "🍽️",
-      Transport: "🚗",
-      Accommodation: "🏨",
-      Entertainment: "🎬",
-      Shopping: "🛍️",
-      Other: "📝",
+      Food: <UtensilsCrossed size={16} />,
+      Transport: <Car size={16} />,
+      Accommodation: <Hotel size={16} />,
+      Entertainment: <Clapperboard size={16} />,
+      Shopping: <ShoppingBag size={16} />,
+      Other: <FileText size={16} />,
     }
-    return icons[category] || "📝"
+    return icons[category] || <FileText size={16} />
   }
 
   if (loadingExpenses) {
@@ -346,7 +347,7 @@ const ExpensesTab = ({ groupId, members }) => {
                   setShowComments(true)
                 }}
               >
-                💬 Comments ({commentCounts[expense.id] ?? 0})
+                <MessageCircle size={14} style={{ marginRight: "4px", verticalAlign: "middle" }} /> Comments ({commentCounts[expense.id] ?? 0})
               </Button>
               {userId === expense.paid_by_id && (<Button
                 variant="secondary"

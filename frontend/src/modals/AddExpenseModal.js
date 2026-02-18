@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Modal from "../components/Modal"
 import Input from "../components/Input"
 import Button from "../components/Button"
+import { Paperclip } from "lucide-react"
 
 const AddExpenseModal = ({ isOpen, onClose, onSubmit, groupMembers, isEditing, setIsEditing, selectedExpense, expenseShare, existingReceiptUrl }) => {
 
@@ -294,7 +295,7 @@ const AddExpenseModal = ({ isOpen, onClose, onSubmit, groupMembers, isEditing, s
             onChange={handleFileChange}
           />
           <label htmlFor="receipt" className="btn btn-medium btn-secondary">
-            📎 Choose File
+            <Paperclip size={14} style={{ marginRight: "6px", verticalAlign: "middle" }} /> Choose File
           </label>
         </div>
         {selectedFile ? (

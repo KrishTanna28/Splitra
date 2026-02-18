@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react"
 import { useTheme } from "../context/ThemeContext"
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
+import { Moon, Sun, User, LogOut } from "lucide-react"
 import "../styles/navbar.css"
 
 const Navbar = () => {
@@ -138,17 +139,17 @@ const Navbar = () => {
                 <div className="dropdown-divider"></div>
 
                 <button className="dropdown-item" onClick={handleThemeToggle}>
-                  <span className="dropdown-icon">{theme === "light" ? "🌙" : "☀️"}</span>
+                  <span className="dropdown-icon">{theme === "light" ? <Moon size={16} /> : <Sun size={16} />}</span>
                   <span>Switch to {theme === "light" ? "Dark" : "Light"} Mode</span>
                 </button>
 
                 <button className="dropdown-item" onClick={handleProfileNavigation}>
-                  <span className="dropdown-icon">👤</span>
+                  <span className="dropdown-icon"><User size={16} /></span>
                   <span>Profile</span>
                 </button>
 
                 <button className="dropdown-item logout-item" onClick={handleLogout}>
-                  <span className="dropdown-icon">🚪</span>
+                  <span className="dropdown-icon"><LogOut size={16} /></span>
                   <span>Logout</span>
                 </button>
               </div>
