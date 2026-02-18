@@ -17,7 +17,6 @@ const SettlementsTab = ({ groupId, members }) => {
   const [showAddSettlement, setShowAddSettlement] = useState(false)
   const [addingSettlement, setAddingSettlement] = useState(false)
   const [showQR, setShowQR] = useState(false)
-  const [selectedUser, setSelectedUser] = useState(null)
   const { user, token } = useAuth()
   const navigate = useNavigate()
   const userName = user?.name || "You"
@@ -88,8 +87,7 @@ const SettlementsTab = ({ groupId, members }) => {
     }
   }
 
-  const handleShowQR = (user) => {
-    setSelectedUser(user)
+  const handleShowQR = () => {
     setShowQR(true)
   }
 

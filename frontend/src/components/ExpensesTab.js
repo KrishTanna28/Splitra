@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import Card from "./Card"
 import Button from "./Button"
 import AddExpenseModal from "../modals/AddExpenseModal"
@@ -20,7 +20,6 @@ const ExpensesTab = ({ groupId, members }) => {
   const [commentCounts, setCommentCounts] = useState({})
   const [selectedExpense, setSelectedExpense] = useState(null)
   const [showComments, setShowComments] = useState(false)
-  const [errors, setErrors] = useState({})
   const [addingExpense, setAddingExpense] = useState(false)
   const [updatingExpense, setUpdatingExpense] = useState(false)
   const [groupMembers, setGroupMembers] = useState([])
@@ -57,7 +56,7 @@ const ExpensesTab = ({ groupId, members }) => {
       }
 
     } catch (error) {
-      setErrors({ general: "Failed to fetch expenses. Please try again later." })
+      // silently handle - error shown via showError below
     } finally {
       setLoadingExpenses(false)
     }
@@ -92,7 +91,7 @@ const ExpensesTab = ({ groupId, members }) => {
         }, 1500)
         setShowAddExpense(false)
       } else {
-        setErrors(data.message || "Failed to add expense")
+        showError(data.message || "Failed to add expense", "Error")
         setTimeout(() => {
           setAddingExpense(false)
           showError(data.message || "Failed to add expense", "Error")
@@ -100,7 +99,7 @@ const ExpensesTab = ({ groupId, members }) => {
       }
 
     } catch (error) {
-      setErrors({ general: "Failed to add expense. Please try again later." })
+      // error shown via showError below
       setTimeout(() => {
         setAddingExpense(false)
         showError(error.message, "Error")
@@ -125,7 +124,7 @@ const ExpensesTab = ({ groupId, members }) => {
         console.error("Failed to fetch comment count for expense", expenseId);
       }
     } catch (error) {
-      setErrors({ general: "Failed to fetch comment counts. Please try again later." });
+      // silently handle
     };
   }
 
@@ -149,13 +148,14 @@ const ExpensesTab = ({ groupId, members }) => {
         }));
       }
     } catch (error) {
-      setErrors({ general: "Failed to fetch expense share. Please try again later." });
+      // silently handle
     }
   }
 
 
   useEffect(() => {
     fetchExpenses(groupId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId, token, allExpenses.length, commentCounts.length]);
 
   useEffect(() => {
@@ -232,7 +232,7 @@ const ExpensesTab = ({ groupId, members }) => {
           fetchExpenses(groupId);
         }, 1500);
       } else {
-        setErrors(data.message || "Failed to edit expense");
+        showError(data.message || "Failed to edit expense", "Error")
         setTimeout(() => {
           setUpdatingExpense(false);
           showError(data.message || "Failed to edit expense", "Error");
@@ -240,7 +240,7 @@ const ExpensesTab = ({ groupId, members }) => {
       }
 
     } catch (error) {
-      setErrors({ general: "Failed to edit expense. Please try again later." });
+      // error shown via showError below
       setTimeout(() => {
         setUpdatingExpense(false);
         showError(error.message, "Error");

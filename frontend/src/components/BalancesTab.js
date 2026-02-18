@@ -14,7 +14,6 @@ const BalancesTab = ({ groupId }) => {
   const [settlements, setSettlements] = useState([])
   const [myBalances, setMyBalances] = useState({})
   const [balances, setBalances] = useState({})
-  const [errors, setErrors] = useState({})
   const [showAddSettlement, setShowAddSettlement] = useState(false)
   const [sendingReminder, setSendingReminder] = useState(false)
   const [addingSettlement, setAddingSettlement] = useState(false)
@@ -82,7 +81,6 @@ const BalancesTab = ({ groupId }) => {
         credentials: "include"
       })
 
-      const data = await response.json();
 
     if (!response.ok) {
         showError("Unable to send email")

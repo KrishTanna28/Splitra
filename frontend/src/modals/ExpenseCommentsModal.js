@@ -67,7 +67,7 @@ const ExpenseCommentsModal = ({ isOpen, onClose, expense, commentCounts }) => {
       await fetchComments()
       setNewComment("")
     } catch (error) {
-      setErrors({ general: "Failed to add comment. Please try again later." })
+      showError("Failed to add comment. Please try again later.")
     } finally {
       setLoading(false)
     }

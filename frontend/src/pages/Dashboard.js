@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import Navbar from "../components/Navbar"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -97,7 +97,7 @@ const Dashboard = () => {
     }
   }
 
-  const fetchGroups = useCallback(async () => {
+  const fetchGroups = async () => {
     setErrors({})
     try {
       const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
@@ -121,11 +121,12 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  }, [REACT_APP_API_URL, token, setGroups])
+  }
 
   useEffect(() => {
     fetchGroups();
-  }, [token, fetchGroups]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
 
   if (loading) return <LoadingModal
