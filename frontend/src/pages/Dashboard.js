@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Navbar from "../components/Navbar"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -13,7 +13,7 @@ import LoadingModal from "../components/LoadingModal"
 
 
 const Dashboard = () => {
-  const { user, token } = useAuth()
+  const { token } = useAuth()
   const [showCreateGroup, setShowCreateGroup] = useState(false)
   const { groups, setGroups } = useApp()
   const [groupCount, setGroupCount] = useState({});
@@ -97,7 +97,7 @@ const Dashboard = () => {
     }
   }
 
-  const fetchGroups = async () => {
+  const fetchGroups = useCallback(async () => {
     setErrors({})
     try {
       const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
@@ -121,11 +121,11 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  }
+  }, [REACT_APP_API_URL, token, setGroups])
 
   useEffect(() => {
     fetchGroups();
-  }, [token]);
+  }, [token, fetchGroups]);
 
 
   if (loading) return <LoadingModal
@@ -200,7 +200,7 @@ const Dashboard = () => {
                 <div className="group-header">
                   <h3>{group.name}</h3>
                   <span className="members-count">
-                    {groupCount[group.id] ?? 0} {groupCount[group.id] == 1 ? "member" : "members"}
+                    {groupCount[group.id] ?? 0} {groupCount[group.id] === 1 ? "member" : "members"}
                   </span>
                 </div>
                 <p className="group-description">{group.description}</p>

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import { useState, useEffect, useCallback } from "react"
+import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext";
 import Card from "./Card"
 import Button from "./Button"
@@ -13,7 +13,6 @@ import LoadingModal from "../components/LoadingModal"
 const GroupInfo = ({ members, onMemberAdded, groupId }) => {
   const [showAddMember, setShowAddMember] = useState(false)
   const { notification, hideNotification, showSuccess, showError, showWarning } = useNotification()
-  const [loading, setLoading] = useState(false)
   const [leavingGroup, setLeavingGroup] = useState(false)
   const { token, user } = useAuth()
   const [groupInfo, setGroupInfo] = useState(null)
@@ -58,7 +57,7 @@ const GroupInfo = ({ members, onMemberAdded, groupId }) => {
   }
 
 
-  const fetchGroupInfo = async (groupId) => {
+  const fetchGroupInfo = useCallback(async (gId) => {
     setErrors({})
     try {
       const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
@@ -69,7 +68,7 @@ const GroupInfo = ({ members, onMemberAdded, groupId }) => {
 
       const data = await response.json();
       if (response.ok) {
-        const group = data.groups.find((g) => g.id === Number(groupId))
+        const group = data.groups.find((g) => g.id === Number(gId))
         setGroupInfo(group);
       } else {
         setErrors({ general: "Failed to fetch groups" });
@@ -77,7 +76,7 @@ const GroupInfo = ({ members, onMemberAdded, groupId }) => {
     } catch (err) {
       setErrors({ general: "Something went wrong." });
     }
-  };
+  }, [REACT_APP_API_URL, token]);
 
   const handleAddMember = async (memberData) => {
     setAddingMember(true);
@@ -143,7 +142,7 @@ const GroupInfo = ({ members, onMemberAdded, groupId }) => {
 
   useEffect(() => {
     fetchGroupInfo(groupId);
-  }, [token, groupId])
+  }, [token, groupId, fetchGroupInfo])
 
   if (!groupInfo) {
     return <LoadingModal

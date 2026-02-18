@@ -129,7 +129,7 @@ const AddSettlementModal = ({ isOpen, onClose, onSubmit, groupId, members, prefi
               <option value="">Select member</option>
               {members.map((member) => (
                 <option key={member.id} value={member.id}>
-                  {member.name == userName ? "You" : member.name}
+                  {member.name === userName ? "You" : member.name}
                 </option>
               ))}
             </select>
@@ -147,7 +147,7 @@ const AddSettlementModal = ({ isOpen, onClose, onSubmit, groupId, members, prefi
               <option value="">Select member</option>
               {members.map((member) => (
                 <option key={member.id} value={member.id}>
-                  {member.name == userName ? "You" : member.name}
+                  {member.name === userName ? "You" : member.name}
                 </option>
               ))}
             </select>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Card from "./Card"
 import Button from "./Button"
 import AddSettlementModal from "../modals/AddSettlementModal"
@@ -18,7 +18,6 @@ const SettlementsTab = ({ groupId, members }) => {
   const [addingSettlement, setAddingSettlement] = useState(false)
   const [showQR, setShowQR] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
-  const [ errors, setErrors ] = useState({})
   const { user, token } = useAuth()
   const navigate = useNavigate()
   const userName = user?.name || "You"
@@ -26,11 +25,7 @@ const SettlementsTab = ({ groupId, members }) => {
 
   const { notification, hideNotification, showError, showSuccess } = useNotification()
 
-  useEffect(() => {
-    fetchSettlements()
-  }, [groupId])
-
-  const fetchSettlements = async () => {
+  const fetchSettlements = useCallback(async () => {
     setLoadingSettlements(true)
     try{
       const response = await fetch(`${REACT_APP_API_URL}/settlements/${groupId}`,{
@@ -46,11 +41,15 @@ const SettlementsTab = ({ groupId, members }) => {
         setSettlements(data.settlements)
       }
     }catch(error){
-      setErrors({general:"Error fetching settlements"})
+      showError("Error fetching settlements")
     }finally{
       setLoadingSettlements(false)
     }
-  }
+  }, [REACT_APP_API_URL, groupId, token, showError])
+
+  useEffect(() => {
+    fetchSettlements()
+  }, [groupId, fetchSettlements])
 
   const handleAddSettlement = async (settlementData) => {
     setAddingSettlement(true)

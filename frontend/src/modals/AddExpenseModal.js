@@ -42,7 +42,7 @@ const AddExpenseModal = ({ isOpen, onClose, onSubmit, groupMembers, isEditing, s
       setSplits(updatedSplits);
 
     }
-  }, [isEditing, selectedExpense]);
+  }, [isEditing, selectedExpense, expenseShare, groupMembers]);
   const [splits, setSplits] = useState([]);
 
 

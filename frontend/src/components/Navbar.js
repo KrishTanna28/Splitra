@@ -12,7 +12,6 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false)
   const navigate = useNavigate()
   const dropdownRef = useRef(null)
-  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
   // Close dropdown when clicking outside
   useEffect(() => {

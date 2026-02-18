@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar"
@@ -10,7 +10,6 @@ import BalancesTab from "../components/BalancesTab"
 import SettlementsTab from "../components/SettlementsTab"
 import ReportsTab from "../components/ReportsTab"
 import "../styles/group-page.css"
-import Button from "../components/Button";
 import { Users, Banknote, Scale, CreditCard, BarChart2 } from "lucide-react"
 
 const GroupPage = () => {
@@ -19,16 +18,10 @@ const GroupPage = () => {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState("info")
   const [groupInfo, setGroupInfo] = useState(null)
-  const [errors, setErrors] = useState({})
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [groupMembers, setGroupMembers] = useState([])
 
-  useEffect(() => {
-    fetchGroupinfo(groupId);
-    fetchGroupMembers(groupId);
-  }, [token, groupId, groupMembers]);
-
-  const fetchGroupinfo = async (groupId) => {
+  const fetchGroupinfo = useCallback(async (gId) => {
     try {
       const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
         headers: {
@@ -38,20 +31,17 @@ const GroupPage = () => {
 
       const data = await response.json();
       if (response.ok) {
-        const group = data.groups.find((g) => g.id === Number(groupId))
+        const group = data.groups.find((g) => g.id === Number(gId))
         setGroupInfo(group);
-      } else {
-        setErrors("Failed to fetch groups");
       }
     } catch (err) {
-      setErrors("Something went wrong.");
+      // silently handle
     }
-  };
+  }, [REACT_APP_API_URL, token]);
 
-  const fetchGroupMembers = async (groupId) => {
-    setErrors({})
+  const fetchGroupMembers = useCallback(async (gId) => {
     try {
-      const response = await fetch(`${REACT_APP_API_URL}/groups/${groupId}/members`, {
+      const response = await fetch(`${REACT_APP_API_URL}/groups/${gId}/members`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -63,9 +53,14 @@ const GroupPage = () => {
         setGroupMembers(data.members);
       }
     } catch (error) {
-      setErrors({ general: `Unable to fetch member count for group ${groupId}` })
+      // silently handle
     }
-  }
+  }, [REACT_APP_API_URL, token]);
+
+  useEffect(() => {
+    fetchGroupinfo(groupId);
+    fetchGroupMembers(groupId);
+  }, [token, groupId, fetchGroupinfo, fetchGroupMembers]);
 
   const tabs = [
     { id: "info", label: "Group Info", icon: <Users size={16} /> },

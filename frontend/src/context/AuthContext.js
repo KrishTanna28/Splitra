@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect, useCallback } from "react"
 
 const AuthContext = createContext()
 
@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [errors, setErrors] = useState({})
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
   useEffect(() => {
@@ -37,8 +36,8 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const fetchUserDetails = async () => {
-    if (!token) return;  // <-- Add this guard to avoid calling API without token
+  const fetchUserDetails = useCallback(async () => {
+    if (!token) return;
 
     try {
       const response = await fetch(`${REACT_APP_API_URL}/auth/user-details`, {
@@ -58,13 +57,13 @@ export const AuthProvider = ({ children }) => {
         setUser(userWithCleanPath);
       }
     } catch (error) {
-      setErrors("Unable to fetch user details")
+      // silently handle
     }
-  }
+  }, [REACT_APP_API_URL, token])
 
     useEffect(()=>{
       fetchUserDetails()
-    },[token])
+    },[token, fetchUserDetails])
 
   const login = (userData, token) => {
     localStorage.setItem("token", token)

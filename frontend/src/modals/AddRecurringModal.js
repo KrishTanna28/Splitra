@@ -145,10 +145,7 @@ const AddRecurringModal = ({ isOpen, onClose, onSubmit, editData, groups }) => {
     }
   }
 
-  function formatDateOnly(isoString) {
-  const date = new Date(isoString);
-  return date.toISOString().split("T")[0]; // Always "yyyy-MM-dd"
-}
+
 
   const handleClose = () => {
     setFormData({

@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import Modal from "../components/Modal"
 import Button from "../components/Button"
 import { useNotification } from "../hooks/useNotification"
@@ -9,15 +9,10 @@ const UPIQRModal = ({ isOpen, onClose }) => {
   const { notification, hideNotification, showSuccess, showError } = useNotification()
   const { token } = useAuth()
   const [qrData, setQrData] = useState(null)
-  const [errors, setErrors] = useState({})
   const [user, setUser] = useState({})
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL
-  useEffect(() => {
-    fetchQRCode()
-    fetchUserDetails()
-  }, [user, token])
 
-  const fetchQRCode = async () => {
+  const fetchQRCode = useCallback(async () => {
       if (user?.upi_id) {
         try {
           const response = await fetch(`${REACT_APP_API_URL}/settlements/${user.id}/upi-qr?amount=0`, {
@@ -35,9 +30,9 @@ const UPIQRModal = ({ isOpen, onClose }) => {
           console.error("QR Fetch error:", err)
         }
       }
-    }
+    }, [REACT_APP_API_URL, user?.upi_id, user?.id, token, showError])
 
-    const fetchUserDetails = async () =>{
+    const fetchUserDetails = useCallback(async () => {
       try{
         const response = await fetch(`${REACT_APP_API_URL}/auth/user-details`, {
           headers:{
@@ -51,9 +46,14 @@ const UPIQRModal = ({ isOpen, onClose }) => {
           setUser(data.user)
         }
       }catch(error){
-        setErrors("Unable to fetch user details")
+        // silently handle
       }
-    }
+    }, [REACT_APP_API_URL, token])
+
+  useEffect(() => {
+    fetchQRCode()
+    fetchUserDetails()
+  }, [user, token, fetchQRCode, fetchUserDetails])
 
   const handleCopyUPI = () => {
     if (user?.upi_id) {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Card from "../components/Card"
@@ -23,40 +23,12 @@ const RecurringContributions = () => {
     const [addingRecurring, setAddingRecurring] = useState(false)
     const [editRecurring, setEditRecurring] = useState(false)
     const [deleteRecurring, setDeleteRecurring] = useState(false)
-    const [errors, setErrors] = useState({})
     const { token } = useAuth()
     const navigate = useNavigate()
     const { notification, hideNotification, showSuccess, showConfirm, showError } = useNotification()
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
-    const fetchGroups = async () => {
-        setErrors({})
-        try {
-            const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setGroups(data.groups)
-            }
-        } catch (error) {
-            setErrors({ general: "Unable to fetch groups" })
-        }
-    }
-
-    useEffect(() => {
-        fetchGroups();
-    }, [token]);
-
-    useEffect(() => {
-        fetchActiveRecurringContributions()
-    }, [recurringContributions.length])
-
-    const fetchActiveRecurringContributions = async () => {
+    const fetchActiveRecurringContributions = useCallback(async () => {
         setLoadingRecurringContributions(true)
         try {
             const response = await fetch(`${REACT_APP_API_URL}/settlements/my-recurring`, {
@@ -86,11 +58,37 @@ const RecurringContributions = () => {
                 setRecurringContributions(normalized);
             }
         } catch (error) {
-            setErrors({ general: "Unable to fetch active contributions" });
-        }finally{
+            // silently handle
+        } finally {
             setLoadingRecurringContributions(false)
         }
-    };
+    }, [REACT_APP_API_URL, token]);
+
+    const fetchGroups = useCallback(async () => {
+        try {
+            const response = await fetch(`${REACT_APP_API_URL}/groups/my-groups`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setGroups(data.groups)
+            }
+        } catch (error) {
+            // silently handle
+        }
+    }, [REACT_APP_API_URL, token, setGroups])
+
+    useEffect(() => {
+        fetchGroups();
+    }, [token, fetchGroups]);
+
+    useEffect(() => {
+        fetchActiveRecurringContributions()
+    }, [recurringContributions.length, fetchActiveRecurringContributions])
 
     const handleAddContribution = async (contributionData) => {
         setAddingRecurring(true)
@@ -122,7 +120,7 @@ const RecurringContributions = () => {
             await fetchActiveRecurringContributions()
 
         } catch (error) {
-            setErrors("Unable to send add recurring contribution")
+            showError("Unable to send add recurring contribution")
         }
     }
 
@@ -156,7 +154,7 @@ const RecurringContributions = () => {
             await fetchActiveRecurringContributions()
 
         } catch (error) {
-            setErrors("Unable to send add recurring contribution")
+            showError("Unable to send add recurring contribution")
         }
     }
 
@@ -196,7 +194,7 @@ const RecurringContributions = () => {
                         showError(data.message || "Failed to update contribution");
                     }
                 } catch (error) {
-                    setErrors("Unable to toggle");
+                    showError("Unable to toggle");
                 }
             },
             `${action.charAt(0).toUpperCase() + action.slice(1)} Contribution`
@@ -229,10 +227,10 @@ const RecurringContributions = () => {
                             showSuccess("Recurring contribution deleted successfully!", "Success");
                         },1500)
                     } else {
-                        setErrors(data.message || "Unable to delete contribution");
+                        showError(data.message || "Unable to delete contribution");
                     }
                 } catch (error) {
-                    setErrors("Unable to delete contribution");
+                    showError("Unable to delete contribution");
                 }
             },
             "Delete Contribution"

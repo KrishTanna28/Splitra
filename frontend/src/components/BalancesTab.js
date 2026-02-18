@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Card from "./Card"
 import { useAuth } from "../context/AuthContext"
 import Button from "./Button"
@@ -24,15 +24,10 @@ const BalancesTab = ({ groupId }) => {
   const { user, token } = useAuth()
   const userId = user?.id
 
-  useEffect(() => {
-    fetchBalances(groupId);
-    fetchMyBalances(groupId);
-  }, [groupId, settlements.length], balances.length)
-
-  const fetchBalances = async (groupId) => {
+  const fetchBalances = useCallback(async (gId) => {
     setLoadingBalances(true)
     try {
-      const response = await fetch(`${REACT_APP_API_URL}/balances/${groupId}`, {
+      const response = await fetch(`${REACT_APP_API_URL}/balances/${gId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -43,15 +38,15 @@ const BalancesTab = ({ groupId }) => {
         setSettlements(data.settlements || []);
       }
     } catch (error) {
-      setErrors({ general: `Unable to fetch balances for group ${groupId}` });
-    }finally{
+      showError(`Unable to fetch balances`);
+    } finally {
       setLoadingBalances(false)
     }
-  };
+  }, [REACT_APP_API_URL, token, showError]);
 
-  const fetchMyBalances = async (groupId) => {
+  const fetchMyBalances = useCallback(async (gId) => {
     try {
-      const response = await fetch(`${REACT_APP_API_URL}/balances/${groupId}/my-balances`, {
+      const response = await fetch(`${REACT_APP_API_URL}/balances/${gId}/my-balances`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -62,9 +57,14 @@ const BalancesTab = ({ groupId }) => {
       }
       console.log("Fetched my balances:", data.settlements);
     } catch (error) {
-      setErrors({ general: `Unable to fetch your balances for group ${groupId}` })
+      showError(`Unable to fetch your balances`);
     }
-  }
+  }, [REACT_APP_API_URL, token, showError]);
+
+  useEffect(() => {
+    fetchBalances(groupId);
+    fetchMyBalances(groupId);
+  }, [groupId, settlements.length, fetchBalances, fetchMyBalances])
 
   const sendReminder = async (settlement) => {
     setSendingReminder(true)
@@ -84,8 +84,7 @@ const BalancesTab = ({ groupId }) => {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        setErrors(data.message);
+    if (!response.ok) {
         showError("Unable to send email")
       } else {
         setTimeout(() => {
@@ -94,7 +93,7 @@ const BalancesTab = ({ groupId }) => {
         }, 1500)
       }
     } catch (error) {
-      setErrors({ general: "Unable to send the reminder" })
+      showError("Unable to send the reminder")
     }
   }
 

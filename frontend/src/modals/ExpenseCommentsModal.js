@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Modal from "../components/Modal"
 import Button from "../components/Button"
 import { useAuth } from "../context/AuthContext"
@@ -13,14 +13,13 @@ const ExpenseCommentsModal = ({ isOpen, onClose, expense, commentCounts }) => {
   const [newComment, setNewComment] = useState("")
   const [selectedEmoji, setSelectedEmoji] = useState("")
   const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState({})
   const { token, user } = useAuth()
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL
   const { notification, hideNotification, showError } = useNotification()
 
   const emojis = ["👍", "👎", "😊", "😢", "😮", "❤️", "🔥", "💯"]
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const response = await fetch(`${REACT_APP_API_URL}/expenses/${expense.id}/comments`, {
         headers: {
@@ -31,18 +30,17 @@ const ExpenseCommentsModal = ({ isOpen, onClose, expense, commentCounts }) => {
       const data = await response.json()
       if (response.ok) {
         setComments(data.comments)
-        return comments;
       } else {
         throw new Error(data.message || "Failed to fetch comments")
       }
     } catch (error) {
-      setErrors({ general: "Failed to fetch comments. Please try again later." })
+      showError("Failed to fetch comments. Please try again later.")
     }
-  }
+  }, [REACT_APP_API_URL, expense?.id, token, showError])
 
   useEffect(() => {
     fetchComments();
-  }, [expense, token, commentCounts])
+  }, [expense, token, commentCounts, fetchComments])
 
   const handleAddComment = async (e) => {
     e.preventDefault()

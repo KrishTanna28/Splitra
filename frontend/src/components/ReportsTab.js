@@ -62,7 +62,7 @@ const ReportsTab = ({ groupId }) => {
     if (groupId) {
       fetchSummary()
     }
-  }, [groupId])
+  }, [groupId, REACT_APP_API_URL, token])
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-IN", {

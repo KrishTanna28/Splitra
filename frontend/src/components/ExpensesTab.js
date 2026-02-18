@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, use } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Card from "./Card"
 import Button from "./Button"
 import AddExpenseModal from "../modals/AddExpenseModal"
@@ -159,8 +159,11 @@ const ExpensesTab = ({ groupId, members }) => {
   }, [groupId, token, allExpenses.length, commentCounts.length]);
 
   useEffect(() => {
-    fetchCommentCounts(allExpenses.id);
-  }, commentCounts)
+    if (allExpenses.length > 0) {
+      allExpenses.forEach(expense => fetchCommentCounts(expense.id));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allExpenses.length])
 
   const handleDeleteExpense = (expense) => {
     const expenseId = expense.id
