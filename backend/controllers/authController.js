@@ -74,7 +74,7 @@ exports.login = async (req, res, next) => {
     await storeOTP(email, otp);
     
     // Send OTP via email
-    const subject = '🔐 Login OTP - Split Payment App';
+    const subject = '🔐 Login OTP - Splitra';
     const body = `
 Hello ${user.name},
 
@@ -170,7 +170,7 @@ exports.resendOTP = async (req, res, next) => {
     await storeOTP(email, otp);
     
     // Send new OTP via email
-    const subject = '🔐 New Login OTP - Split Payment App';
+    const subject = '🔐 New Login OTP - Splitra';
     const body = `
 Hello ${user.name},
 
