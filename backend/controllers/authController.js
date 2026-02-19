@@ -85,7 +85,7 @@ This OTP will expire in 1 minute.
 If you didn't request this login, please ignore this email.
 
 Thanks,
-Split Payment App Team
+Team Splitra
     `;
     
     await sendEmail(email, subject, body);
@@ -181,7 +181,7 @@ This OTP will expire in 1 minute.
 If you didn't request this login, please ignore this email.
 
 Thanks,
-Split Payment App Team
+Team Splitra
     `;
     
     await sendEmail(email, subject, body);

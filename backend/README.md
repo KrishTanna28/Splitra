@@ -1,8 +1,8 @@
-# Split Payment App - Backend
+# Splitra - Backend
 
 ## Overview
 
-The Split Payment App backend is a Node.js/Express server that enables users to manage group expenses, split bills, track balances, and settle up efficiently. It supports group management, expense tracking, settlements (including UPI QR code generation), reporting, and automated reminders with OTP-based authentication.
+The Splitra backend is a Node.js/Express server that enables users to manage group expenses, split bills, track balances, and settle up efficiently. It supports group management, expense tracking, settlements (including UPI QR code generation), reporting, and automated reminders with OTP-based authentication.
 
 ---
 
@@ -21,7 +21,7 @@ The Split Payment App backend is a Node.js/Express server that enables users to 
 
 ## Architecture Overview
 
-Your Split Payment App is a **Node.js/Express REST API** with **PostgreSQL** database, designed for group expense management with advanced features like OTP authentication, automated reminders, and settlement optimization.
+Your Splitra is a **Node.js/Express REST API** with **PostgreSQL** database, designed for group expense management with advanced features like OTP authentication, automated reminders, and settlement optimization.
 
 ---
 
