@@ -344,16 +344,23 @@ exports.getTotalExpenses = async (req, res, next) => {
     const { groupId } = req.params;
     try {
         const result = await pool.query(
-            `SELECT * FROM group_total_expenses WHERE group_id = $1`, [groupId]
-        )
+            `SELECT
+                group_id,
+                COUNT(*)::int          AS expense_count,
+                COALESCE(SUM(amount), 0) AS total_expenses
+             FROM expenses
+             WHERE group_id = $1
+             GROUP BY group_id`,
+            [groupId]
+        );
 
         if (result.rows.length === 0) {
-            return res.json({ total_expenses: 0 });
+            return res.json({ group_id: groupId, expense_count: 0, total_expenses: 0 });
         }
 
-        res.json(result.rows[0])
+        res.json(result.rows[0]);
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
 
