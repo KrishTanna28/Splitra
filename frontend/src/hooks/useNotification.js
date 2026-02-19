@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 
 export const useNotification = () => {
   const [notification, setNotification] = useState({
@@ -14,7 +14,7 @@ export const useNotification = () => {
     onConfirm: null,
   })
 
-  const showNotification = ({
+  const showNotification = useCallback(({
     title = "Notification",
     message,
     type = "info",
@@ -33,26 +33,54 @@ export const useNotification = () => {
       cancelText,
       onConfirm,
     })
-  }
+  }, [])
 
-  const hideNotification = () => {
+  const hideNotification = useCallback(() => {
     setNotification((prev) => ({ ...prev, isOpen: false }))
-  }
+  }, [])
 
-  const showSuccess = (message, title = "Success") => {
-    showNotification({ title, message, type: "success" })
-  }
+  const showSuccess = useCallback((message, title = "Success") => {
+    setNotification({
+      isOpen: true,
+      title,
+      message,
+      type: "success",
+      confirmText: "OK",
+      showCancel: false,
+      cancelText: "Cancel",
+      onConfirm: null,
+    })
+  }, [])
 
-  const showError = (message, title = "Error") => {
-    showNotification({ title, message, type: "error" })
-  }
+  const showError = useCallback((message, title = "Error") => {
+    setNotification({
+      isOpen: true,
+      title,
+      message,
+      type: "error",
+      confirmText: "OK",
+      showCancel: false,
+      cancelText: "Cancel",
+      onConfirm: null,
+    })
+  }, [])
 
-  const showWarning = (message, title = "Warning") => {
-    showNotification({ title, message, type: "warning" })
-  }
+  const showWarning = useCallback((message, title = "Warning") => {
+    setNotification({
+      isOpen: true,
+      title,
+      message,
+      type: "warning",
+      confirmText: "OK",
+      showCancel: false,
+      cancelText: "Cancel",
+      onConfirm: null,
+    })
+  }, [])
 
-  const showConfirm = (message, onConfirm, title = "Confirm") => {
-    showNotification({
+  const showConfirm = useCallback((message, onConfirm, title = "Confirm") => {
+    setNotification({
+      isOpen: true,
       title,
       message,
       type: "warning",
@@ -61,7 +89,7 @@ export const useNotification = () => {
       cancelText: "No",
       onConfirm,
     })
-  }
+  }, [])
 
   return {
     notification,

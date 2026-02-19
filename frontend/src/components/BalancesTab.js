@@ -63,7 +63,7 @@ const BalancesTab = ({ groupId }) => {
   useEffect(() => {
     fetchBalances(groupId);
     fetchMyBalances(groupId);
-  }, [groupId, settlements.length, fetchBalances, fetchMyBalances])
+  }, [groupId, fetchBalances, fetchMyBalances])
 
   const sendReminder = async (settlement) => {
     setSendingReminder(true)
