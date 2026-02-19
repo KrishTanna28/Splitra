@@ -54,7 +54,7 @@ const BalancesTab = ({ groupId }) => {
       if (response.ok) {
         setMyBalances(data || {})
       }
-      console.log("Fetched my balances:", data.settlements);
+
     } catch (error) {
       showError(`Unable to fetch your balances`);
     }
